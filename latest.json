@@ -1,0 +1,11 @@
+{
+  "_comment": "Release feed — CI overwrites this on every published tag. Two readers: the landing page picks the right installer per OS and shows the size; the macOS build uses version/url/notes to NOTICE a new release (it cannot self-install — no Apple signature). Windows does not read this file at all: it auto-updates via electron-updater against latest.yml in the releases repo.",
+  "version": "0.1.1",
+  "date": "2026-07-12T00:00:00Z",
+  "notes": "Первый публичный релиз.",
+  "url": "https://github.com/mdanshin/outtalk-releases/releases/latest",
+  "downloads": {
+    "win": { "url": "https://github.com/mdanshin/outtalk-releases/releases/latest", "size": 0 },
+    "mac": { "url": "https://github.com/mdanshin/outtalk-releases/releases/latest", "size": 0 }
+  }
+}

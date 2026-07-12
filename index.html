@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OutTalk — почта Exchange на рабочем столе</title>
+    <meta
+      name="description"
+      content="Настольный почтовый клиент для Microsoft Exchange. Скачать для Windows и macOS."
+    />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="icon.png" />
+
+    <meta property="og:title" content="OutTalk — почта Exchange на рабочем столе" />
+    <meta property="og:description" content="Настольный почтовый клиент для Microsoft Exchange." />
+    <meta property="og:type" content="website" />
+
+    <style>
+      /* Palette taken literally from the brand master (build/brand/vector/outtalk-dark.svg),
+         so the site and the app icon are the same object rather than two similar ones.
+
+         Type: the system stack, deliberately. The audience sits on corporate networks where
+         a webfont from a CDN loads slowly or not at all — an identity that depends on a font
+         which may never arrive is not an identity. Personality comes from scale, weight and
+         tracking instead. */
+      :root {
+        --ink: #080d19;
+        --slate: #111a31;
+        --line: #1e2842;
+        --fg: #e8eaf1;
+        --muted: #8792ac;
+        --cyan: #16e5ff;
+        --blue: #1687ff;
+        --deep: #224bff;
+        --violet: #5428e8;
+        --orchid: #8a36ff;
+
+        --brand: linear-gradient(135deg, var(--cyan), var(--blue) 42%, var(--deep) 72%, var(--violet));
+        --radius: 14px;
+        --measure: 62ch;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        background: var(--ink);
+        color: var(--fg);
+        font-family: 'Segoe UI Variable Display', 'Segoe UI', -apple-system, BlinkMacSystemFont,
+          'SF Pro Display', system-ui, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        /* The mark's own gradient, bled into the page behind the hero. */
+        background-image:
+          radial-gradient(48rem 32rem at 78% -8%, rgba(84, 40, 232, 0.2), transparent 62%),
+          radial-gradient(42rem 28rem at 8% 4%, rgba(22, 229, 255, 0.1), transparent 58%);
+        background-repeat: no-repeat;
+      }
+
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      .wrap {
+        width: min(100% - 2.5rem, 62rem);
+        margin-inline: auto;
+      }
+
+      /* ————————————————————————— header ————————————————————————— */
+      header {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 1.6rem 0;
+      }
+      header .mark {
+        width: 34px;
+        height: 34px;
+        flex: none;
+      }
+      .wordmark {
+        font-size: 1.05rem;
+        font-weight: 650;
+        letter-spacing: -0.015em;
+      }
+      header .repo {
+        margin-left: auto;
+        font-size: 0.86rem;
+        color: var(--muted);
+        text-decoration: none;
+      }
+      header .repo:hover {
+        color: var(--fg);
+      }
+
+      /* ————————————————————————— hero ————————————————————————— */
+      .hero {
+        padding: 4.5rem 0 3rem;
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2.4rem, 6.5vw, 4rem);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        font-weight: 680;
+        text-wrap: balance;
+        max-width: 16ch;
+      }
+      .hero h1 em {
+        font-style: normal;
+        background: var(--brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lede {
+        margin: 1.25rem 0 0;
+        max-width: var(--measure);
+        color: var(--muted);
+        font-size: 1.12rem;
+      }
+
+      /* ——————————————————— the download card ———————————————————
+         This card is the page's whole job, so it is the hero rather than a button
+         somewhere below the fold. The honest note lives INSIDE it, not in a footnote:
+         an unsigned build WILL make Windows say "unknown publisher", and a person
+         deserves to know that before they click, not after. */
+      .get {
+        margin-top: 2.5rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(17, 26, 49, 0.9), rgba(8, 13, 25, 0.9));
+        overflow: hidden;
+      }
+      .get-main {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.25rem;
+        padding: 1.5rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.95rem 1.5rem;
+        border: 0;
+        border-radius: 11px;
+        background: var(--brand);
+        color: #fff;
+        font: inherit;
+        font-weight: 640;
+        font-size: 1.02rem;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 8px 30px -12px rgba(34, 75, 255, 0.9);
+        transition:
+          transform 0.14s ease,
+          box-shadow 0.14s ease,
+          filter 0.14s ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.06);
+        box-shadow: 0 14px 36px -12px rgba(34, 75, 255, 1);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+      .btn svg {
+        width: 20px;
+        height: 20px;
+        flex: none;
+      }
+
+      .alt {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+      .alt a {
+        color: var(--fg);
+        text-decoration: none;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 1px;
+      }
+      .alt a:hover {
+        border-bottom-color: var(--cyan);
+      }
+
+      /* Facts, not adjectives. Tabular numerals so versions and sizes line up. */
+      .facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 2rem;
+        padding: 0.85rem 1.5rem;
+        border-top: 1px solid var(--line);
+        background: rgba(8, 13, 25, 0.6);
+        font-size: 0.86rem;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .facts b {
+        color: var(--fg);
+        font-weight: 600;
+      }
+
+      .heads-up {
+        display: flex;
+        gap: 0.85rem;
+        padding: 1.1rem 1.5rem;
+        border-top: 1px solid var(--line);
+        background: rgba(138, 54, 255, 0.06);
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+      .heads-up svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+        margin-top: 3px;
+        color: var(--orchid);
+      }
+      .heads-up b {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .heads-up p {
+        margin: 0;
+        max-width: var(--measure);
+      }
+      .heads-up p + p {
+        margin-top: 0.4rem;
+      }
+
+      /* ————————————————————————— screenshot ————————————————————————— */
+      .shot {
+        margin-top: 4.5rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--slate);
+        aspect-ratio: 16 / 10;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+        overflow: hidden;
+      }
+      .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* ————————————————————————— what it is ————————————————————————— */
+      .what {
+        padding: 4.5rem 0 1rem;
+      }
+      .what h2 {
+        margin: 0 0 2rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      /* Four points, so they settle into 2×2 rather than an orphaned 3+1. */
+      .grid {
+        display: grid;
+        gap: 2rem 3rem;
+        grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+      }
+      .grid h3 {
+        margin: 0 0 0.35rem;
+        font-size: 1.02rem;
+        font-weight: 620;
+        letter-spacing: -0.01em;
+      }
+      .grid p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .grid kbd {
+        font: inherit;
+        font-size: 0.85em;
+        padding: 0.05em 0.4em;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: var(--slate);
+        color: var(--fg);
+      }
+
+      footer {
+        margin-top: 5rem;
+        padding: 1.75rem 0 3rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.86rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+      }
+      footer a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--fg);
+      }
+
+      /* One orchestrated entrance, then the page sits still. */
+      @media (prefers-reduced-motion: no-preference) {
+        .hero h1,
+        .lede,
+        .get {
+          animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+        }
+        .hero h1 {
+          animation-delay: 0.02s;
+        }
+        .lede {
+          animation-delay: 0.08s;
+        }
+        .get {
+          animation-delay: 0.14s;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+        }
+      }
+
+      @media (max-width: 40rem) {
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        .facts {
+          gap: 0 1.25rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <!-- The app's own mark, not a lookalike. -->
+        <svg class="mark" viewBox="0 0 512 512" role="img" aria-label="OutTalk">
+          <defs>
+            <linearGradient id="m" x1="82" y1="96" x2="420" y2="424" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#16E5FF" />
+              <stop offset="0.42" stop-color="#1687FF" />
+              <stop offset="0.72" stop-color="#224BFF" />
+              <stop offset="1" stop-color="#5428E8" />
+            </linearGradient>
+            <linearGradient id="a" x1="322" y1="92" x2="450" y2="145" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#5632FF" />
+              <stop offset="0.55" stop-color="#8A36FF" />
+              <stop offset="1" stop-color="#C166FF" />
+            </linearGradient>
+          </defs>
+          <g
+            fill="none"
+            stroke="url(#m)"
+            stroke-width="34"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M300 120H168C126 120 92 154 92 196V306C92 352 130 390 176 390H326C370 390 406 354 406 310V242"
+            />
+            <path d="M176 390L116 438L133 376" />
+            <path d="M112 174L254 286L394 174" />
+          </g>
+          <g fill="none" stroke="url(#a)" stroke-width="28" stroke-linecap="round">
+            <path d="M342 120H388" />
+            <path d="M426 120H430" />
+          </g>
+        </svg>
+        <span class="wordmark">OutTalk</span>
+        <a class="repo" id="releases-link" href="#">Все версии</a>
+      </header>
+
+      <main>
+        <section class="hero">
+          <h1>Почта <em>Exchange</em> на рабочем столе</h1>
+          <p class="lede">
+            Настольный клиент, который говорит с Exchange напрямую — без веб-интерфейса и без
+            прослоек. Папки, беседы, вложения, поиск на сервере.
+          </p>
+
+          <!-- The download control IS the hero: everything needed to decide is in one card. -->
+          <div class="get">
+            <div class="get-main">
+              <a class="btn" id="download" href="#" rel="noopener">
+                <svg id="os-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"></svg>
+                <span id="download-label">Скачать</span>
+              </a>
+              <div class="alt"><span id="other-os"></span></div>
+            </div>
+
+            <div class="facts">
+              <span>Версия <b id="version">—</b></span>
+              <span>Обновлено <b id="date">—</b></span>
+              <span>Windows 10/11 · macOS 12+</span>
+              <span>Exchange 2013 и новее</span>
+            </div>
+
+            <!-- The signature of this page: say out loud what will happen, before it happens.
+                 Every other download page hides this. -->
+            <div class="heads-up">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 8v5M12 16.5v.01" />
+              </svg>
+              <div>
+                <p>
+                  <b>Сборка не подписана.</b> При первом запуске Windows скажет «Не удалось
+                  проверить издателя»: нажмите «Подробнее» → «Выполнить в любом случае». На macOS
+                  откройте приложение через правый клик → «Открыть».
+                </p>
+                <p id="update-note">
+                  Дальше приложение обновляется само: новые версии докачиваются в фоне и ставятся
+                  при перезапуске.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="shot" id="shot"><span>Скриншот приложения</span></div>
+
+        <section class="what">
+          <h2>Что внутри</h2>
+          <div class="grid">
+            <div>
+              <h3>Прямое подключение к Exchange</h3>
+              <p>EWS, без Outlook и без плагинов. Нужны адрес сервера, логин и пароль.</p>
+            </div>
+            <div>
+              <h3>Пароль хранит операционная система</h3>
+              <p>DPAPI на Windows, Keychain на macOS. В файлах приложения пароля нет.</p>
+            </div>
+            <div>
+              <h3>Диагностика подключения</h3>
+              <p>
+                <kbd>Ctrl</kbd> + <kbd>`</kbd> — панель, которая измеряет каждый запрос к серверу и
+                показывает, на чём теряется время.
+              </p>
+            </div>
+            <div>
+              <h3>Письма показываются как есть</h3>
+              <p>
+                Списки из Word, подписи, встроенные картинки. Удалённое содержимое и трекинг-пиксели
+                по умолчанию заблокированы.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>© OutTalk</span>
+        <a id="releases-footer" href="#">Релизы</a>
+        <a href="latest.json">Фид обновлений</a>
+      </footer>
+    </div>
+
+    <script>
+      // Releases live in a PUBLIC repo of their own; the source stays private. Auto-update
+      // has to fetch assets without a user (and without a token), so they must be public.
+      const RELEASES = 'https://github.com/mdanshin/outtalk-releases/releases'
+      const LATEST_PAGE = RELEASES + '/latest'
+
+      const $ = (id) => document.getElementById(id)
+      $('releases-link').href = RELEASES
+      $('releases-footer').href = RELEASES
+
+      const WIN_ICON =
+        '<path d="M3 5.6 10 4.6v6.8H3V5.6Zm0 12.8 7 1v-6.6H3v5.6ZM11.2 4.4 21 3v8.4h-9.8V4.4Zm0 8.2H21V21l-9.8-1.4v-7Z"/>'
+      const MAC_ICON =
+        '<path d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8c-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.2 1.2-2.4 1.2-2.5 0 0-2.4-.9-2.4-3.5ZM14.2 5.9c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3Z"/>'
+
+      // latest.json is DATA, not markup. It is fetched over the network, so treat it the
+      // way the app treats it: a download URL is honoured only if it points at our own
+      // release assets, and every value it carries is written as TEXT, never as HTML.
+      // Otherwise whoever can alter the feed can both redirect "Download" anywhere and
+      // inject script into this page — the exact allowlist the app enforces in main.
+      const ALLOWED = 'https://github.com/mdanshin/outtalk-releases/releases/'
+      const safeUrl = (url) =>
+        typeof url === 'string' && url.startsWith(ALLOWED) ? url : LATEST_PAGE
+
+      const isMac = /Mac|iPhone|iPad/i.test(navigator.userAgent)
+      const os = isMac ? 'mac' : 'win'
+
+      // A size is worth showing — but only when we actually know it.
+      const mb = (bytes) =>
+        typeof bytes === 'number' && bytes > 0 ? ` · ${(bytes / 1048576).toFixed(0)} МБ` : ''
+
+      function paint(feed) {
+        const downloads = (feed && feed.downloads) || {}
+        // With no feed the page still works: /releases/latest always resolves.
+        const here = downloads[os] || {}
+        const there = downloads[os === 'win' ? 'mac' : 'win'] || {}
+
+        // The OS glyph is ours, not the feed's — innerHTML is safe only because both
+        // strings are constants defined above.
+        $('os-icon').innerHTML = isMac ? MAC_ICON : WIN_ICON
+        $('download').href = safeUrl(here.url)
+        $('download-label').textContent =
+          (isMac ? 'Скачать для macOS' : 'Скачать для Windows') + mb(here.size)
+
+        const otherName = isMac ? 'Windows' : 'macOS'
+        const link = document.createElement('a')
+        link.href = safeUrl(there.url)
+        link.textContent = 'Скачать' + mb(there.size)
+        const alt = $('other-os')
+        alt.textContent = `Нужна версия для ${otherName}? `
+        alt.appendChild(link)
+
+        // Version is a string from the network: show it, but only if it LOOKS like one.
+        if (feed && /^[\w.+-]{1,24}$/.test(String(feed.version ?? ''))) {
+          $('version').textContent = String(feed.version)
+        }
+        if (feed && feed.date) {
+          const d = new Date(feed.date)
+          if (!isNaN(d)) {
+            $('date').textContent = d.toLocaleDateString('ru-RU', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })
+          }
+        }
+
+        // Be truthful per platform. Only Windows can install an update by itself; promising
+        // it on macOS would be a promise this build cannot keep (no Apple signature).
+        if (isMac) {
+          $('update-note').textContent =
+            'О новых версиях приложение сообщит, но установить обновление само не сможет — сборка для macOS не подписана. Скачивать нужно вручную.'
+        }
+      }
+
+      fetch('latest.json', { cache: 'no-store' })
+        .then((r) => (r.ok ? r.json() : null))
+        .then(paint)
+        .catch(() => paint(null))
+
+      // Optional: drop screenshot.png next to this file and it replaces the placeholder.
+      const shot = new Image()
+      shot.onload = () => {
+        const box = $('shot')
+        box.textContent = ''
+        shot.alt = 'Окно OutTalk: список папок, список писем и открытое письмо'
+        box.appendChild(shot)
+      }
+      shot.src = 'screenshot.png'
+    </script>
+  </body>
+</html>
