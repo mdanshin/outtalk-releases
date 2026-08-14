@@ -3,15 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OutTalk — почта Exchange на рабочем столе</title>
+    <title>OutTalk — продвинутый почтовый клиент</title>
     <meta
       name="description"
-      content="Настольный почтовый клиент для Microsoft Exchange. Скачать для Windows и macOS."
+      content="Продвинутый почтовый клиент для Windows и macOS: беседы, календарь, поиск, вложения и быстрые действия."
     />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="icon.png" />
-    <meta property="og:title" content="OutTalk — почта Exchange на рабочем столе" />
-    <meta property="og:description" content="Настольный почтовый клиент для Microsoft Exchange." />
+    <meta property="og:title" content="OutTalk — продвинутый почтовый клиент" />
+    <meta
+      property="og:description"
+      content="Беседы, календарь, поиск, вложения и быстрые действия в одном настольном приложении."
+    />
     <meta property="og:image" content="screenshot.png" />
     <meta property="og:type" content="website" />
 
@@ -191,6 +194,10 @@
       }
       h1 em {
         font-style: normal;
+        /* Text gradients are painted only inside the element box. Leave room for descenders
+           (for example, the tail of “g”) without opening the gap between headline lines. */
+        padding-bottom: .18em;
+        margin-bottom: -.18em;
         background: var(--brand);
         background-size: 220% 100%;
         -webkit-background-clip: text;
@@ -400,7 +407,7 @@
       .grid {
         display: grid;
         gap: 1.25rem;
-        grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr)); /* four points settle into 2x2, not an orphaned 3+1 */
+        grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr)); /* four points settle into 2x2, not an orphaned 3+1 */
       }
       .card {
         position: relative;
@@ -525,6 +532,9 @@
       }
 
       @media (max-width: 46rem) {
+        h1 {
+          font-size: clamp(2rem, 10.8vw, 2.9rem);
+        }
         .btn {
           width: 100%;
           justify-content: center;
@@ -584,16 +594,13 @@
       <main>
         <section class="hero">
           <h1>
-            <span class="w" style="animation-delay: 0.15s">Почта</span>
-            <em class="w" style="animation-delay: 0.3s">Exchange</em><br />
-            <span class="w" style="animation-delay: 0.45s">на</span>
-            <span class="w" style="animation-delay: 0.55s">рабочем</span>
-            <span class="w" style="animation-delay: 0.65s">столе</span>
+            <span class="w" style="animation-delay: 0.15s">Новый взгляд</span><br />
+            <em class="w" style="animation-delay: 0.3s">на входящие</em>
           </h1>
 
           <p class="lede">
-            Настольный клиент для корпоративной почты Exchange. Папки, беседы, вложения, поиск на
-            сервере.
+            Беседы, календарь, быстрый поиск, вложения, черновики и горячие клавиши — всё в одном
+            настольном приложении.
           </p>
 
           <div class="cta">
@@ -608,7 +615,7 @@
             <span>версия <b id="version">—</b></span>
             <span>обновлено <b id="date">—</b></span>
             <span>Windows 10/11 · macOS 12+</span>
-            <span>Exchange 2013 и новее</span>
+            <span>Полная совместимость с Exchange</span>
           </div>
         </section>
 
@@ -623,25 +630,24 @@
           <h2 class="reveal">Что внутри</h2>
           <div class="grid">
             <article class="card reveal">
-              <h3>Для подключения хватит почты и пароля</h3>
+              <h3>Письма собраны в беседы</h3>
               <p>
-                Адрес сервера приложение обычно находит само. Если в вашей организации это отключено —
-                его можно вписать вручную.
+                Входящие и отправленные письма видны вместе. Ответы не приходится искать по разным
+                папкам.
               </p>
             </article>
             <article class="card reveal">
-              <h3>Пароль хранит операционная система</h3>
-              <p>DPAPI на Windows, Keychain на macOS. В файлах приложения пароля нет.</p>
+              <h3>Календарь рядом с почтой</h3>
+              <p>День, неделя и месяц, подробности встреч, участники и перенос событий.</p>
             </article>
             <article class="card reveal">
-              <h3>Видно, на что уходит время</h3>
+              <h3>Быстрые действия без мыши</h3>
               <p>
-                <kbd>Ctrl</kbd> + <kbd>`</kbd> открывает панель, которая показывает каждый запрос к
-                серверу и его длительность.
+                Горячие клавиши помогают читать, отвечать, перемещать и разбирать письма быстрее.
               </p>
             </article>
             <article class="card reveal">
-              <h3>Письмо выглядит так, как его отправили</h3>
+              <h3>Письма без скрытой слежки</h3>
               <p>
                 Оформление сохраняется. А картинки, которые письмо подгружает с чужих сайтов, не
                 загружаются: так отправитель узнаёт, что вы его открыли. Захотите — покажете одним

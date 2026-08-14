@@ -1,10 +1,10 @@
 {
-  "version": "0.1.5",
-  "date": "2026-07-27T12:50:00Z",
-  "notes": "OutTalk 0.1.5 для macOS; Windows остаётся на 0.1.4 до отдельной проверки",
-  "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.5/OutTalk-0.1.5-arm64.dmg",
+  "version": "0.1.6",
+  "date": "2026-08-14T14:10:10Z",
+  "notes": "Релиз v0.1.6",
+  "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.6/OutTalk-0.1.6-arm64.dmg",
   "downloads": {
-    "win": { "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.4/OutTalk-Setup-0.1.4.exe", "size": 87398134 },
-    "mac": { "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.5/OutTalk-0.1.5-arm64.dmg", "size": 111220181 }
+    "win": { "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.6/OutTalk-Setup-0.1.6.exe", "size": 90730097 },
+    "mac": { "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.6/OutTalk-0.1.6-arm64.dmg", "size": 112121459 }
   }
 }
