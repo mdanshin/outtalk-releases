@@ -3,17 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OutTalk — продвинутый почтовый клиент</title>
+    <title>OutTalk — больше, чем почта</title>
     <meta
       name="description"
-      content="Продвинутый почтовый клиент для Windows и macOS: беседы, календарь, поиск, вложения и быстрые действия."
+      content="Почтовый клиент для Mac и Windows, в котором письмо становится задачей: к ней сами собираются переписка, встречи, люди и обращения Jira. Работает с Exchange."
     />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" href="icon.png" />
-    <meta property="og:title" content="OutTalk — продвинутый почтовый клиент" />
+    <meta property="og:title" content="OutTalk — больше, чем почта" />
     <meta
       property="og:description"
-      content="Беседы, календарь, поиск, вложения и быстрые действия в одном настольном приложении."
+      content="Почтовый клиент для Mac и Windows, в котором письмо становится задачей: к ней сами собираются переписка, встречи, люди и обращения Jira. Работает с Exchange."
     />
     <meta property="og:image" content="screenshot.png" />
     <meta property="og:type" content="website" />
@@ -456,6 +456,123 @@
         color: var(--muted);
         font-size: 0.95rem;
       }
+      .hub {
+        display: grid;
+        gap: 2.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+        align-items: start;
+      }
+      .task {
+        margin: 0;
+        border: 1px solid #2c3a60;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(20, 31, 56, 0.96), rgba(7, 11, 20, 0.96));
+        box-shadow: 0 30px 80px -30px rgba(34, 75, 255, 0.45);
+        overflow: hidden;
+      }
+      .task figcaption {
+        padding: 1.3rem 1.5rem 1.1rem;
+        border-bottom: 1px solid var(--line);
+      }
+      .task figcaption b {
+        display: block;
+        font-size: 1.15rem;
+        font-weight: 640;
+        letter-spacing: -0.012em;
+      }
+      .task-kicker,
+      .task .k {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .task ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .task li {
+        display: grid;
+        grid-template-columns: 5.5rem 1fr;
+        gap: 0.15rem 1rem;
+        padding: 0.95rem 1.5rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.95rem;
+      }
+      .task li:first-child {
+        border-top: 0;
+      }
+      .task .k {
+        padding-top: 0.2em;
+      }
+      .task li em {
+        grid-column: 2;
+        font-style: normal;
+        font-size: 0.82rem;
+        color: var(--cyan);
+      }
+      .points {
+        display: grid;
+        gap: 1.6rem;
+      }
+      .points h3 {
+        margin: 0 0 0.35rem;
+        font-size: 1.05rem;
+        font-weight: 640;
+        letter-spacing: -0.012em;
+      }
+      .points p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .soon {
+        border-style: dashed;
+        background: transparent;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+      }
+      .what + .what {
+        padding-top: 5rem;
+      }
+      .faq details {
+        max-width: 62ch;
+        border-top: 1px solid var(--line);
+        padding: 1.05rem 0;
+      }
+      .faq details:last-of-type {
+        border-bottom: 1px solid var(--line);
+      }
+      .faq summary {
+        cursor: pointer;
+        font-weight: 600;
+        list-style: none;
+      }
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq summary::after {
+        content: '+';
+        float: right;
+        color: var(--dim);
+        font-family: var(--mono);
+      }
+      .faq details[open] summary::after {
+        content: '−';
+      }
+      .faq summary:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 4px;
+        border-radius: 4px;
+      }
+      .faq details p {
+        margin: 0.6rem 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
       kbd {
         font-family: var(--mono);
         font-size: 0.82em;
@@ -464,30 +581,6 @@
         border-radius: 5px;
         background: #131d31;
         color: var(--fg);
-      }
-
-      /* The unsigned-build warning stays in the open. Spectacle is not a licence to start
-         hiding what the person will meet two minutes from now. */
-      .heads-up {
-        margin-top: 4rem;
-        padding: 1.15rem 1.35rem;
-        max-width: 62ch;
-        border: 1px solid var(--line);
-        border-left: 2px solid var(--orchid);
-        border-radius: 12px;
-        background: rgba(138, 54, 255, 0.05);
-        font-size: 0.92rem;
-        color: var(--muted);
-      }
-      .heads-up b {
-        color: var(--fg);
-        font-weight: 600;
-      }
-      .heads-up p {
-        margin: 0;
-      }
-      .heads-up p + p {
-        margin-top: 0.45rem;
       }
 
       footer {
@@ -594,13 +687,14 @@
       <main>
         <section class="hero">
           <h1>
-            <span class="w" style="animation-delay: 0.15s">Эволюция почтового клиента.</span><br />
-            <em class="w" style="animation-delay: 0.3s">Почтовый ассистент.</em>
+            <span class="w" style="animation-delay: 0.15s">Больше, чем почта.</span><br />
+            <em class="w" style="animation-delay: 0.3s">Вся работа вокруг письма.</em>
           </h1>
 
           <p class="lede">
-            Беседы, календарь, быстрый поиск, вложения, черновики и горячие клавиши — всё в одном
-            настольном приложении.
+            OutTalk превращает письмо в задачу и сам собирает к ней остальное: ответы по той же
+            переписке, встречи, людей, обращения Jira. Открываете задачу — и видите картину
+            целиком. А ещё это быстрый и мощный почтовый клиент, одинаковый на Mac и Windows.
           </p>
 
           <div class="cta">
@@ -614,8 +708,8 @@
           <div class="facts">
             <span>версия <b id="version">—</b></span>
             <span>обновлено <b id="date">—</b></span>
-            <span>Windows 10/11 · macOS 12+</span>
-            <span>Полная совместимость с Exchange</span>
+            <span>Windows 10/11 · macOS 12+ на Apple Silicon</span>
+            <span>Microsoft Exchange Server</span>
           </div>
         </section>
 
@@ -627,46 +721,191 @@
         </div>
 
         <section class="what">
-          <h2 class="reveal">Что внутри</h2>
+          <h2 class="reveal">Письмо становится задачей</h2>
+          <div class="hub">
+            <figure class="task reveal" aria-label="Пример задачи в OutTalk">
+              <figcaption>
+                <span class="task-kicker">Задача · срок пт</span>
+                <b>Согласовать договор поставки</b>
+              </figcaption>
+              <ul>
+                <li>
+                  <span class="k">Письма</span>
+                  <span>4 письма переписки «Договор поставки»</span>
+                  <em>ответ сам попал в задачу</em>
+                </li>
+                <li>
+                  <span class="k">Встреча</span>
+                  <span>Созвон с юристами · чт 14:00</span>
+                </li>
+                <li>
+                  <span class="k">Люди</span>
+                  <span>Юрист, менеджер поставщика</span>
+                  <em>карточка из адресной книги</em>
+                </li>
+                <li>
+                  <span class="k">Jira</span>
+                  <span>HD-1 · Доступ к порталу поставщика</span>
+                </li>
+              </ul>
+            </figure>
+            <div class="points">
+              <div class="reveal">
+                <h3>В задачу — одним нажатием</h3>
+                <p>
+                  Письмо, встреча, человек или обращение Jira становятся задачей со сроком — или
+                  ложатся в уже существующую.
+                </p>
+              </div>
+              <div class="reveal">
+                <h3>Остальное собирается само</h3>
+                <p>
+                  Новое письмо той же переписки попадает в свою задачу, как только приходит, даже
+                  если тему по дороге обвесили «Re:», «[EXTERNAL]» или номером обращения. В списке
+                  писем разобранные отмечены галочкой.
+                </p>
+              </div>
+              <div class="reveal">
+                <h3>Вся картина в одном месте</h3>
+                <p>
+                  Срок, приоритет, исполнитель и постановщик, заметка-журнал с датой у каждой
+                  строки. Задачи можно связывать, объединять и разделять.
+                </p>
+              </div>
+              <div class="reveal">
+                <h3>Аналитика и граф</h3>
+                <p>
+                  Сколько открыто и просрочено, что горит сегодня, с кем больше всего незакрытых
+                  дел — любая цифра открывает список. Граф показывает, какие дела связаны.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="what">
+          <h2 class="reveal">И при этом — мощный почтовый клиент</h2>
           <div class="grid">
             <article class="card reveal">
-              <h3>Письма собраны в беседы</h3>
+              <h3>Переписка целиком</h3>
               <p>
-                Входящие и отправленные письма видны вместе. Ответы не приходится искать по разным
-                папкам.
+                Входящие и ваши ответы из «Отправленных» — одной веткой, её можно раскрыть прямо в
+                списке. «Связанные» за одно нажатие собирают всю переписку по теме со всего ящика.
               </p>
             </article>
             <article class="card reveal">
-              <h3>Календарь рядом с почтой</h3>
-              <p>День, неделя и месяц, подробности встреч, участники и перенос событий.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Быстрые действия без мыши</h3>
+              <h3>Календарь, который знает про почту</h3>
               <p>
-                Горячие клавиши помогают читать, отвечать, перемещать и разбирать письма быстрее.
+                День, неделя и месяц сплошной лентой. На приглашение отвечаете прямо из письма, а за
+                15 минут до встречи появляется напоминание с кнопкой «Подключиться».
               </p>
             </article>
             <article class="card reveal">
-              <h3>Письма без скрытой слежки</h3>
+              <h3>Коллеги, а не адреса</h3>
               <p>
-                Оформление сохраняется. А картинки, которые письмо подгружает с чужих сайтов, не
-                загружаются: так отправитель узнаёт, что вы его открыли. Захотите — покажете одним
-                нажатием.
+                Нажмите на имя — откроется карточка из адресной книги: фото, должность, отдел,
+                телефоны, руководитель и подчинённые. Письма от VIP отмечены золотой рамкой.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Без ожидания</h3>
+              <p>
+                Сервер сообщает о новом письме мгновенно. Копия почты хранится на компьютере: после
+                запуска письма на экране сразу, черновик ответа готов за четверть секунды.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Руки на клавиатуре</h3>
+              <p>
+                Горячие клавиши как в Apple Mail: <kbd>⌘R</kbd> — ответить, <kbd>⇧⌘D</kbd> —
+                отправить, стрелки — по списку. Разбор почты без мыши.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Никто не узнает, что вы открыли письмо</h3>
+              <p>
+                Картинки-трекеры с чужих сайтов не загружаются, пока вы не разрешите. Копия почты
+                зашифрована, пароль лежит в защищённом хранилище системы.
               </p>
             </article>
           </div>
+        </section>
 
-          <div class="heads-up reveal">
+        <section class="what">
+          <h2 class="reveal">Один клиент на всех компьютерах</h2>
+          <div class="grid">
+            <article class="card reveal">
+              <h3>Mac и Windows</h3>
+              <p>
+                Один интерфейс и одни клавиши. Задачи, подпись, цвета календаря, VIP и избранные
+                папки переезжают вместе с почтовым ящиком: завели задачу на работе — дома она уже
+                есть.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Exchange сегодня</h3>
+              <p>
+                Почта, календарь и адресная книга с сервера Exchange вашей компании. Адрес сервера
+                OutTalk обычно находит сам по email.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Jira и Confluence рядом</h3>
+              <p>
+                Свои обращения и «Пульс команды» для руководителя, поиск и чтение базы знаний,
+                «Сохранить в Confluence» прямо из письма. Включаются в настройках.
+              </p>
+            </article>
+            <article class="card reveal soon">
+              <h3>Дальше</h3>
+              <p>Gmail и IMAP. Страницы Confluence внутри задачи.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="what faq">
+          <h2 class="reveal">Вопросы</h2>
+          <details class="reveal" open>
+            <summary>Какой сервер нужен?</summary>
             <p>
-              <b>Сборка не подписана.</b> При первом запуске Windows скажет «Не удалось проверить
-              издателя»: нажмите «Подробнее» → «Выполнить в любом случае». На macOS откройте
-              приложение через правый клик → «Открыть».
+              Microsoft Exchange Server с включёнными веб-службами (EWS) — обычная конфигурация
+              корпоративной почты.
             </p>
+          </details>
+          <details class="reveal">
+            <summary>А Microsoft 365?</summary>
+            <p>
+              Пока нет. Облачный Exchange требует другого способа входа (OAuth), которого в OutTalk
+              ещё нет.
+            </p>
+          </details>
+          <details class="reveal">
+            <summary>Подойдёт ли Mac на Intel?</summary>
+            <p>Нет. Сборка для Mac — только для Apple Silicon (M1 и новее), macOS 12 и выше.</p>
+          </details>
+          <details class="reveal">
+            <summary>Почему Windows предупреждает при первом запуске?</summary>
+            <p>
+              Сборка не подписана. Windows скажет «Не удалось проверить издателя»: нажмите
+              «Подробнее» → «Выполнить в любом случае». На macOS откройте приложение через правый
+              клик → «Открыть».
+            </p>
+          </details>
+          <details class="reveal">
+            <summary>Где хранятся письма, задачи и пароль?</summary>
+            <p>
+              На вашем компьютере и в вашем почтовом ящике Exchange — через него задачи и настройки
+              переезжают на другие устройства. Пароль остаётся в защищённом хранилище системы. Jira
+              и Confluence OutTalk открывает от вашего имени, по вашему личному токену.
+            </p>
+          </details>
+          <details class="reveal">
+            <summary>Как обновляться?</summary>
             <p id="update-note">
-              Дальше приложение обновляется само: новые версии докачиваются в фоне и ставятся при
+              Приложение обновляется само: новые версии докачиваются в фоне и ставятся при
               перезапуске.
             </p>
-          </div>
+          </details>
         </section>
       </main>
 
