@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Архитектура — Документация OutTalk</title>
+<meta name="description" content="OutTalk следует классической трёхпроцессной модели Electron с жёстким разделением ответственности и единой доменной моделью, общей для всех процессов.">
+<link rel="icon" href="../icon.png">
+<link rel="stylesheet" href="assets/docs.css">
+<script src="assets/theme.js"></script>
+<script src="assets/docs.js" defer></script>
+</head>
+<body data-slug="architecture">
+<a class="skip" href="#content">К содержимому</a>
+<header class="top">
+  <a class="brand" href="../"><img src="../icon.png" alt="" width="26" height="26"><span>OutTalk</span></a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a class="crumb" href="./">Документация</a>
+  <div class="search" role="search">
+    <svg class="search-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Поиск по документации…" aria-label="Поиск по документации" autocomplete="off" spellcheck="false" aria-controls="results" aria-expanded="false">
+    <div id="results" class="results" role="listbox" aria-label="Результаты поиска" hidden></div>
+  </div>
+  <button id="theme" class="theme" type="button" aria-label="Сменить тему" title="Сменить тему"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="Разделы документации"><details class="side-box" open><summary>Разделы</summary><div class="group"><div class="group-name">Что нового</div><ul><li><a href="changelog.html">Что нового</a></li></ul></div><div class="group"><div class="group-name">Введение</div><ul><li><a href="overview.html">Обзор проекта</a></li><li><a href="getting-started.html">Быстрый старт</a></li></ul></div><div class="group"><div class="group-name">Архитектура</div><ul><li><a href="architecture.html" aria-current="page">Архитектура</a></li><li><a href="local-data-offline.html">Локальные данные и recovery</a></li><li><a href="processes-ipc.html">Процессы и IPC</a></li><li><a href="domain-model.html">Доменная модель</a></li><li><a href="provider-model.html">Модель провайдеров</a></li></ul></div><div class="group"><div class="group-name">Exchange</div><ul><li><a href="exchange-ews.html">Exchange: протокол EWS</a></li><li><a href="exchange-auth-network.html">Exchange: аутентификация и сеть</a></li><li><a href="exchange-mapping.html">Exchange: маппинг данных</a></li><li><a href="office-addins.html">Exchange: надстройки Outlook</a></li></ul></div><div class="group"><div class="group-name">IMAP / SMTP</div><ul><li><a href="imap.html">IMAP / SMTP: протокол и маппинг</a></li></ul></div><div class="group"><div class="group-name">Безопасность</div><ul><li><a href="security.html">Безопасность</a></li><li><a href="smime.html">S/MIME: зашифрованные и подписанные письма</a></li></ul></div><div class="group"><div class="group-name">Плагины</div><ul><li><a href="plugins-architecture.html">Архитектура плагинов</a></li></ul></div><div class="group"><div class="group-name">Интерфейс</div><ul><li><a href="ui.html">Интерфейс и состояние</a></li><li><a href="settings.html">Настройки</a></li><li><a href="shortcuts.html">Горячие клавиши</a></li></ul></div><div class="group"><div class="group-name">Эксплуатация</div><ul><li><a href="build-run.html">Сборка и запуск</a></li><li><a href="debugging.html">Отладка</a></li><li><a href="performance.html">Производительность</a></li><li><a href="dev-process.html">Процесс и агенты</a></li><li><a href="distribution.html">Дистрибуция и обновления</a></li></ul></div><div class="group"><div class="group-name">Справочник</div><ul><li><a href="adr.html">Архитектурные решения (ADR)</a></li><li><a href="roadmap.html">Дорожная карта</a></li></ul></div></details></nav>
+<main id="content" class="main" tabindex="-1">
+<div class="kicker">Архитектура</div>
+<article class="markdown"><h1 id="архитектура">Архитектура</h1>
+<p>OutTalk следует классической трёхпроцессной модели Electron с жёстким разделением ответственности и единой доменной моделью, общей для всех процессов.</p>
+<h2 id="слои">Слои</h2>
+<pre><code class="hljs language-scss">┌────────────────────────── renderer (React) ──────────────────────────┐
+│  pages/      Mail · Calendar · Contacts · Settings · Docs              │
+│  components/ layout (NavRail, FolderPane) · mail · docs · ui          │
+│  store/      useUi · useAccounts · useMail · useCompose · useContacts  │
+│  lib/        mail (IPC-обёртка) · sanitize · <span class="hljs-selector-tag">nav</span> · utils              │
+└───────────────────────────────┬───────────────────────────────────────┘
+                                 │  window<span class="hljs-selector-class">.api</span>.*  (contextBridge)
+┌───────────────────────────────┴───────────────────────────────────────┐
+│  preload/index<span class="hljs-selector-class">.ts</span> — типобезопасный мост поверх ipcRenderer<span class="hljs-selector-class">.invoke</span>     │
+└───────────────────────────────┬───────────────────────────────────────┘
+                                 │  ipcMain<span class="hljs-selector-class">.handle</span>(&#x27;mail:*&#x27;, &#x27;app:*&#x27;, …)
+┌───────────────────────────────┴───────────────────────────────────────┐
+│  <span class="hljs-selector-tag">main</span> (Node.js)                                                       │
+│   ipc/        mail · window · diag · update · plugins · addins ← вниз │
+│   providers/  access (resolveProvider/traced) · types (MailProvider)  │
+│               · registry · demo · exchange/                           │
+│   windows/    mainWindow · messageWindow · harden (гарды навигации)  │
+│   accounts/   store (реестр) · secrets (safeStorage)                 │
+│   local-data/ <span class="hljs-selector-tag">path</span> · keys · шифрованное SQLite-хранилище · recovery   │
+│   diag/       bus (ring-buffer, push) · trace (ALS, Proxy)           │
+│   attached-message/  parse (postal-mime) · store — письмо во вложении │
+│               (ниже ipc/, выше providers/; ADR-<span class="hljs-number">0129</span>)                  │
+│   addins/     надстройки Outlook: разбор, каталог, брокер, хост      │
+│               (ADR-<span class="hljs-number">0139</span>; не импортирует провайдер Exchange)           │
+│   util/       result (Result/MailError/guarded) · quietLibs           │
+└───────────────────────────────────────────────────────────────────────┘
+
+<span class="hljs-attribute">src</span>/shared/mail-types<span class="hljs-selector-class">.ts</span> — доменная модель почты для ВСЕХ процессов.
+<span class="hljs-attribute">src</span>/shared/diag-types<span class="hljs-selector-class">.ts</span> — контракт диагностики (рядом с моделью, не внутри неё).
+</code></pre>
+<p><strong>Зависимости в main идут только вниз.</strong> Модуль <code>ipc/*</code> <strong>не импортирует</strong> другой <code>ipc/*</code>: общий код (выбор провайдера — <code>providers/access.ts</code>, конверт <code>Result</code> — <code>util/result.ts</code>) лежит этажом ниже и доступен обоим. Раньше <code>ipc/diag.ts</code> тянул приватные хелперы из <code>ipc/mail.ts</code> — зависимость «вбок» между регистраторами каналов; она устранена. См. <a href="provider-model.html#слой-доступа-providersaccessts">Модель провайдеров → Слой доступа</a>.</p>
+<h2 id="ключевые-принципы">Ключевые принципы</h2>
+<h3 id="1-провайдер-агностичное-ядро">1. Провайдер-агностичное ядро</h3>
+<p>Всё выше main работает только с доменными типами (<code>MailFolder</code>, <code>MessageSummary</code>, <code>MessageDetail</code>, <code>EmailAddress</code>, <code>Attachment</code>, <code>DraftInput</code>). Бэкенд реализует интерфейс <span><code>MailProvider</code></span>. Добавить Gmail/IMAP = новый класс + ветка в <code>registry.ts</code>; UI не меняется. См. <a href="provider-model.html">Модель провайдеров</a>.</p>
+<h3 id="2-единый-источник-истины-типов">2. Единый источник истины типов</h3>
+<p><code>src/shared/mail-types.ts</code> импортируется main, preload и renderer (алиас <code>@shared</code>, настроен в <code>electron.vite.config.ts</code> и <code>tsconfig.*.json</code>). Никакого дублирования и рассинхрона. См. <a href="domain-model.html">Доменная модель</a>.</p>
+<h3 id="3-result-вместо-исключений-через-ipc">3. Result вместо исключений через IPC</h3>
+<p>Провайдеры бросают <code>MailError</code> с кодом (<code>auth</code>/<code>network</code>/<code>not_found</code>/…); IPC-обёртка превращает это в:</p>
+<pre><code class="hljs language-ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Result</span>&lt;T&gt; =
+  | { <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span>; <span class="hljs-attr">data</span>: T }
+  | { <span class="hljs-attr">ok</span>: <span class="hljs-literal">false</span>; <span class="hljs-attr">error</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">code</span>?: <span class="hljs-title class_">ErrorCode</span> }
+</code></pre>
+<p>Через границу IPC исключения не пробрасываются — только <code>Result</code>. См. <a href="processes-ipc.html">Процессы и IPC</a>.</p>
+<h3 id="4-безопасность-по-умолчанию">4. Безопасность по умолчанию</h3>
+<p><code>contextIsolation: true</code> + OS-песочница renderer (<code>sandbox: true</code>, preload собран CommonJS), узкий typed <code>window.api</code>, шифрование секретов, санитайзинг HTML, CSP, единый харденинг окон (<code>windows/harden.ts</code>), Electron Fuses в упакованной сборке (<a href="adr.html#adr-0064-аудит-безопасности-os-песочница-renderer-оверлей-письма-экранирование-soap-текста-https-only-адреса-fuses-сборки">ADR-0064</a>). См. <a href="security.html">Безопасность</a>.</p>
+<h3 id="5-демо-провайдер">5. Демо-провайдер</h3>
+<p><code>DemoProvider</code> реализует тот же контракт → весь UI работает без реального сервера. Он выбирается только при <code>OUTTALK_DEMO=1</code> и явном <code>accountId === &#x27;demo&#x27;</code>; пустой, отсутствующий или неизвестный ID завершается ошибкой <code>auth</code>.</p>
+<h3 id="6-fail-closed-foundation-локальных-данных">6. Fail-closed foundation локальных данных</h3>
+<p><code>main/local-data</code> реализует opaque account paths, защищённый per-account key envelope и зашифрованную SQLite-базу с версионированной схемой/миграциями, <code>store_meta</code> binding, WAL validation/recovery и hard size limits. WAL-проверка повторяет recovery-семантику SQLite: валидный префикс, оканчивающийся полным commit frame, восстанавливается даже при stale/preallocated frames или оборванном хвосте после аварийной остановки; повреждение до последнего доказанного commit остаётся fail-closed. Межпроцессный lifecycle lock охватывает key publication, открытие и удаление; открытый handle дополнительно удерживает уникальную crash-sticky lease. Удаление закрывает локальный handle и завершается <code>lock_unavailable</code>, пока существует lease другого процесса; lock/lease не крадутся по PID или возрасту и требуют ручного подтверждённого recovery после crash. Account directory и DB/WAL/SHM до файловых операций проверяются на symlink/junction и containment. На Windows отсутствие настоящего directory flush даёт typed runtime gate, а не подменяется <code>fsync</code> файла. Полный протокол и рунбук — <a href="local-data-offline.html">Локальные данные и recovery</a>.</p>
+<h2 id="структура-каталогов">Структура каталогов</h2>
+<pre><code class="hljs language-bash">src/
+  shared/
+    mail-types.ts               доменная модель почты (общая) + AppIntent (ADR-0098)
+    meeting-reminder.ts         правило «когда напоминать о встрече» — одно на оба процесса
+                                  (сроки, отбор, ключ, тёплый диапазон, «что созрело»; ADR-0098)
+    diag-types.ts               контракт диагностики (DiagEvent, ConnectionTestResult…)
+    addin-types.ts              надстройки Outlook: AddinInfo, пределы моста ADDIN_LIMITS, события
+                                редактора встречи; addins-probe-types.ts — проверка этапа 0 (ADR-0139)
+    demo-lists.ts               синтетические письма с нумерованными списками (Outlook/Word/Gmail/Apple Mail):
+                                  общие для unit-тестов санитайзера и демо-ящика (OUTTALK_DEMO_LISTS=1; ADR-0036)
+    demo-spacing.ts             синтетические письма для проверки отступов (Outlook/Word/OWA/Gmail/Apple Mail):
+                                  общие для unit-тестов санитайзера и демо-ящика (OUTTALK_DEMO_SPACING=1; ADR-0162)
+    attached-message.ts         правила письма во вложении: isMessageAttachment / isOutlookMsgAttachment /
+                                  isAttachedPath / MAX_ATTACHED_DEPTH — одно для main и renderer (ADR-0129)
+  main/
+    index.ts                    окно + жизненный цикл (первый импорт — util/quietLibs)
+    ipc/{mail,window,diag,…}.ts регистрация IPC-обработчиков (не зависят друг от друга)
+    intents.ts                  ячейка «зачем кликнули по уведомлению» (ADR-0098)
+    reminders/
+      scheduler.ts              планировщик напоминаний в main (createMeetingReminders)
+      notify-meeting.ts         показ баннера встречи + правило фокуса (shouldNotifyMeeting)
+      supervisor.ts             один планировщик на процесс (rebuild/stop из точки входа)
+    windows/messageWindow.ts    отдельное окно письма (openMessageWindow)
+    windows/mainWindow.ts       реестр главного окна: focusMainWindow / ensureMainWindow (ADR-0098)
+    windows/harden.ts           hardenWebContents — гарды навигации для КАЖДОГО окна (ADR-0064);
+                                hardenAddinContents — своя политика для страниц надстроек Outlook (ADR-0139)
+    addins/                     надстройки Outlook (ADR-0139): manifest/probe/page-peek — проверка этапа 0;
+                                catalog, origins, intercept (подмена office.js через CDP Fetch),
+                                shim/office-shim.js (своя прослойка Office.js), broker, host (сессии,
+                                страницы функции/панели/диалога), tokens, demo-site, registry — этап 1
+                                address-guard (куда main не ходит: имена/адреса, резолв), icon-fetch
+                                (иконки через ту же проверку), auth (окна входа, очередь LoginLine)
+    ipc/addins.ts               каналы addins:* редактора встречи и addin:call страницы надстройки
+    accounts/{store,secrets}.ts реестр аккаунтов + шифрованные секреты
+    settings/store.ts           userData/settings.json — настройки renderer как непрозрачные строки (ADR-0067)
+    windows/badge.ts            счётчик непрочитанных на иконке (ADR-0066)
+    local-data/{path,keys,native-smoke,schema,store}.ts
+                                  opaque paths, envelope/leases, cipher, migrations, recovery
+    diag/
+      bus.ts                    ring-buffer + push diag:event (сбор по окнам)
+      trace.ts                  runWithTrace (AsyncLocalStorage) + tracedProvider-Proxy
+    smime/                      чтение S/MIME (ADR-0130): service.ts (шаг при чтении письма, кэш в
+                                памяти), system-store.ts (Связка ключей / Windows), keystore.ts (.p12 в
+                                safeStorage), cms-decrypt/cms-verify/pkcs12/pbe/rc2/der (криптография),
+                                render.ts (через attached-message/parse.ts), runtime.ts (синглтоны);
+                                отправка (ADR-0131): send.ts (проверки, контекст, sendMime),
+                                signer.ts (кто подписывает + проверка подписи), outgoing.ts (MIME-слои),
+                                cms-build.ts (EnvelopedData/SignedData), recipient-certs.ts,
+                                cert-cache.ts (сертификаты корреспондентов), thread.ts (цепочка)
+    providers/compose.ts        общий сборщик MIME (MailComposer) — IMAP, Demo и S/MIME (ADR-0131)
+    ipc/smime.ts                каналы настроек smime:* (только главное окно)
+    directory/                  VIP из каталога организации (LDAP, только чтение; ADR-0153), без
+                                Electron, кроме vip-runtime.ts: ldap-filter.ts (имя атрибута, RFC 4515,
+                                фильтр, mail/proxyAddresses), ldap-vip.ts (один проход: TLS → <span class="hljs-built_in">bind</span> →
+                                rootDSE → постраничный поиск; три рубежа против пароля без TLS),
+                                ldap-discover.ts («Найти автоматически»: Exchange → DNS системы → Node,
+                                проверка портов), system-dns.ts (серверы имён системы: scutil --dns /
+                                resolv.conf / USERDNSDOMAIN), vip-store.ts
+                                (userData/directory-vip.json, safeStorage, не роумится), vip-service.ts
+                                (расписание, вход по credentialId, предохранитель), vip-runtime.ts (проводка)
+    ipc/directory-vip.ts        каналы directoryVip:* (адреса — окну ящика, остальное — главному окну)
+    attached-message/
+      parse.ts                  RFC 822 → AttachedMessage + части (postal-mime, пределы; ADR-0129)
+      store.ts                  AttachedMessageStore — кэш разобранного по «ящик+письмо+вложение+путь»
+    providers/
+      access.ts                 resolveProvider / traced — точка доступа для ipc/*
+      types.ts                  MailProvider + реэкспорт доменных типов
+      registry.ts               фабрика провайдера по типу аккаунта
+      demo.ts                   DemoProvider (моки)
+      demo-eml.ts               письмо-вложение демо-ящика для читалки (ADR-0129)
+      exchange/
+        ews.ts                  фабрика ExchangeService (auth/URL/прокси/keep-alive)
+        provider.ts             ExchangeProvider (реализация MailProvider)
+        diagnose.ts             рунбук теста подключения + verdictOf
+        autodiscover-ad.ts      Autodiscover GetUserSettings → ActiveDirectoryServer для «Найти
+                                автоматически» сервер каталога (один запрос, без редиректов; ADR-0153)
+    util/
+      result.ts                 Result / MailError / guarded
+      service-url.ts            validServiceUrl — https-only адрес сервера (EWS URL, baseUrl Jira/Confluence);
+                                serviceRoot — вставленная из браузера ссылка → корень сервера (ADR-0071)
+      html-text.ts              общий линейный токенайзер HTML в main: tokenizeHtml / decodeEntities /
+                                CONTROL_CHARS_RE / htmlToText — письмо → текст и вики-страница → блоки (ADR-0072)
+      bounded-body.ts           readBoundedText / readBoundedBytes — чтение ответа с жёстким потолком
+                                (клиенты Jira и Confluence, картинки читалки)
+      quietLibs.ts              глушение шума [xmldom …] (side-effect, грузится первым)
+  preload/index.ts              мост window.api (mail · diag · window · …); сборка → out/preload/index.cjs
+                                (CommonJS: окна работают с sandbox: <span class="hljs-literal">true</span>, ADR-0064)
+  preload/addin-preload.ts      второй вход сборки → addin-preload.cjs: только outtalkAddinHost.call
+                                для страниц надстроек Outlook, без window.api (ADR-0139)
+  preload/addin-login-preload.ts  третий вход → addin-login-preload.cjs: окно входа на сервер
+                                надстройки — addin-login:submit / addin-login:cancel, без моста (ADR-0139)
+  renderer/src/
+    App.tsx, main.tsx           входная точка
+    index.css                   дизайн-система (темы, prose, .email-body, подсветка)
+    lib/                        mail, sanitize (+normalizeWordLists, email-spacing — поля
+                                абзацев из &lt;style&gt; письма, ADR-0162), diag, shortcuts,
+                                nav, useTheme, utils, conversationActions (чистые хелперы),
+                                upcoming-meeting, reminder-presentation, event-location,
+                                settings-storage (StateStorage → settings.json), roaming +
+                                roaming-slices (перенос через ящик, ADR-0067), unread-badge,
+                                nav-order + rail-sections (порядок значков левой панели, ⌘1…⌘9, ADR-0151),
+                                vip + useVipList (эффективный список VIP: ручной ∪ каталог, ADR-0153;
+                                уровни none/vip/super, супер-VIP вручную, ADR-0161), vip-glow (классы
+                                света VIP и супер-VIP), plugin-vip (ответ кадру { vip, super }),
+                                directory-vip (обёртка моста directoryVip:*, ADR-0153)
+    store/                      useUi, useAccounts, useMail, useCompose, useContacts,
+                                useCalendar, useMeetingReminders (ADR-0056), useDiagnostics,
+                                useRoaming (штампы переноса, ADR-0067),
+                                useDirectoryVip (VIP из каталога — только память, ADR-0153)
+    components/                 layout, mail, diagnostics, docs, ui (Tooltip…),
+                                strip (TopStripSlot, UpcomingMeetingBanner, ReminderAnnouncer)
+    content/docs/               ← эта документация
+    pages/                      Mail, Calendar, Contacts, Settings, Docs
+</code></pre>
+<h2 id="поток-данных-открыть-письмо">Поток данных: открыть письмо</h2>
+<pre><code class="hljs language-bash">ReadingPane → useMail.selectMessage(accountId, <span class="hljs-built_in">id</span>)
+  ├─ pin(cacheKey) → DetailCache.get(key)     ← ключ: accountId + привязка ящика + <span class="hljs-built_in">id</span> (ADR-0145)
+  │    ├─ HIT  → <span class="hljs-built_in">set</span>({ message, messageInstant: <span class="hljs-literal">true</span> }) — мгновенно, без сети и без анимации
+  │    └─ MISS → <span class="hljs-built_in">set</span>({ pendingSummary })  ← сводка из списка рисуется сразу
+  │             → fetchDetail() [single-flight, inFlight Map]
+  │                → Mail.message() → window.api.mail.message()
+  │                → ipc <span class="hljs-string">&#x27;mail:message&#x27;</span> → кэш тел main (detail-sync.ts; переживает обновление
+  │                  списка, ADR-0145) → при промахе resolveProvider(accountId).getMessage(<span class="hljs-built_in">id</span>)
+  │                → ExchangeProvider: EmailMessage.Bind(..., openPropertySet()) → map (тело со ссылками cid:)
+  │                → [ADR-0145] тело отдано → main, не дожидаясь, запускает ОДИН пакет картинок:
+  │                  provider.getInlineImages?(<span class="hljs-built_in">id</span>, cids) → кэш картинок main (inline-store.ts)
+  │                → [S/MIME, ADR-0130] ПОСЛЕ кэша деталей main: SmimeService.open —
+  │                  getMessageMime → расшифровка/подпись → тело и части из памяти
+  │                → MessageDetail → DetailCache.<span class="hljs-built_in">set</span>(key) → <span class="hljs-built_in">set</span>({ message })
+  ├─ прогрев соседей (prev/next) через prefetchMessage() и списка (startWarm) — фоновый fetchDetail;
+  │  картинки соседей и первых 6 писем прогрева — ipc <span class="hljs-string">&#x27;mail:warmInlineImages&#x27;</span> (фон, ADR-0145, ADR-0149)
+  └─ sanitizeEmailHtml (cid: → data-cid) → рендер в ReadingPane
+        └─ hydrateInlineImages: сначала ipc <span class="hljs-string">&#x27;mail:prefetchInlineImages&#x27;</span> (все cid по порядку →
+           ОДИН пакет, ADR-0149), затем по картинке на ipc <span class="hljs-string">&#x27;mail:inlineImage&#x27;</span>
+           → память S/MIME → кэш картинок main → идущий пакет письма → диск (база ящика)
+           → (первый промах) пакет на всё письмо → getInlineImage(<span class="hljs-built_in">id</span>, cid)
+           → data:-URI подставляется в &lt;img&gt; по мере готовности (ADR-0040, ADR-0145)
+
+Отправка S/MIME (ADR-0131):
+  ComposeDialog → decideSend (lib/smime-compose.ts) → Mail.smimeSend → ipc <span class="hljs-string">&#x27;mail:smime:send&#x27;</span>
+     → smime/send.ts: проверки (понижение, сертификаты) → composeMessage → подпись (ОС/.p12,
+       проверяется) → шифрование (получатели + сам) → provider.sendMime → удалить заменённый черновик
+</code></pre>
+<p>Перед сетью стоят <strong>два кэша тел писем</strong>. Клиентский — <code>DetailCache</code> в <code>store/useMail.ts</code>, вне реактивного состояния, свой у каждого окна: повторные открытия и прогретые соседи открываются мгновенно, единый <code>fetchDetail</code> не допускает дублирующих <code>GetItem</code>. Общий для всех окон — кэш тел main (<code>ipc/detail-sync.ts</code>, 150 писем / 64 МБ), рядом с ним — кэш inline-картинок main (<code>ipc/inline-store.ts</code>, 48 МБ). Инварианты: предзагрузка никогда не метит письмо прочитанным; под одним <code>ItemId</code> тело не меняется, поэтому ни <code>refresh</code>, ни переключение ящика, ни свежий список тела <strong>не стирают</strong> — отметки «прочитано»/флаг приходят со списком, а забывается только доказанно удалённое, перемещённое, сохранённое и «Черновики»/«Исходящие» (<a href="adr.html#adr-0145-p3--быстрое-открытие-писем-тела-не-стираются-обновлением-списка-картинки-письма-одним-запросом-беседа-без-ожидания-структуры">ADR-0145</a>). Полная очистка — удаление ящика или другой ящик за тем же id (<code>reset({ purge: true })</code>). Детали — <a href="adr.html#adr-0016-клиентский-кэш-тел-писем-и-предзагрузка-renderer-only-провайдер-агностично">ADR-0016</a>, <a href="adr.html#adr-0145-p3--быстрое-открытие-писем-тела-не-стираются-обновлением-списка-картинки-письма-одним-запросом-беседа-без-ожидания-структуры">ADR-0145</a>, <a href="local-data-offline.html#тела-писем-и-картинки-в-памяти-main-adr-0145">Локальные данные → Тела писем и картинки в памяти main</a>, <a href="ui.html">Интерфейс и состояние</a>.</p>
+<p>Тот же путь для любой операции: UI → store → <code>lib/mail</code> → preload → IPC → провайдер → домен → обратно.</p>
+<h3 id="слоевание-stateful-политика-в-сторе-чистые-хелперы-в-lib">Слоевание: stateful-политика в сторе, чистые хелперы в <code>lib/</code></h3>
+<p>Правило разделения на примере действий «архив/удаление текущего выделения» (<code>archiveSelection</code>/<code>deleteSelection</code>):</p>
+<ul>
+<li><strong>Stateful-политика выбора живёт в сторе.</strong> Только <code>useMail</code> владеет выделением, открытой беседой и списком папок (<code>selection</code>/<code>conversation</code>/<code>folders</code>), поэтому решение «что именно затронуть» (весь тред vs одиночное письмо, что архивировать) принимает он — единым экшеном для всех точек входа.</li>
+<li><strong>Чистые доменные хелперы — в <code>lib/</code></strong> (<code>conversationActions.ts</code>: <code>findArchiveFolder</code>, <code>conversationArchiveIds</code>): без состояния и побочных эффектов, тестируемы, переиспользуются стором и компонентами; раньше эта логика дублировалась по трём компонентам.</li>
+<li><strong>UI держит лишь видимость.</strong> Компоненты используют те же хелперы только для показа/скрытия кнопки (например <code>canArchive</code>), не для выполнения действия. Инварианты слоёв не меняются — отдельный ADR не нужен; детали — <a href="ui.html">Интерфейс → Единый обработчик выделения</a>.</li>
+</ul></article>
+</main>
+<aside class="toc" aria-label="На этой странице"><div class="toc-title">На этой странице</div><ol><li class="d2"><a href="#слои">Слои</a></li><li class="d2"><a href="#ключевые-принципы">Ключевые принципы</a></li><li class="d3"><a href="#1-провайдер-агностичное-ядро">1. Провайдер-агностичное ядро</a></li><li class="d3"><a href="#2-единый-источник-истины-типов">2. Единый источник истины типов</a></li><li class="d3"><a href="#3-result-вместо-исключений-через-ipc">3. Result вместо исключений через IPC</a></li><li class="d3"><a href="#4-безопасность-по-умолчанию">4. Безопасность по умолчанию</a></li><li class="d3"><a href="#5-демо-провайдер">5. Демо-провайдер</a></li><li class="d3"><a href="#6-fail-closed-foundation-локальных-данных">6. Fail-closed foundation локальных данных</a></li><li class="d2"><a href="#структура-каталогов">Структура каталогов</a></li><li class="d2"><a href="#поток-данных-открыть-письмо">Поток данных: открыть письмо</a></li><li class="d3"><a href="#слоевание-stateful-политика-в-сторе-чистые-хелперы-в-lib">Слоевание: stateful-политика в сторе, чистые хелперы в lib/</a></li></ol></aside>
+</div>
+<footer class="foot"><span>© OutTalk</span><a href="../">Сайт</a><a href="./">Документация</a></footer>
+</body>
+</html>

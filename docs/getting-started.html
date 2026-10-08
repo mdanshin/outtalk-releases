@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Быстрый старт — Документация OutTalk</title>
+<meta name="description" content="- Node.js v24 (см. .nvmrc). Проект кросс-платформенный — разработка ведётся на macOS и Windows.">
+<link rel="icon" href="../icon.png">
+<link rel="stylesheet" href="assets/docs.css">
+<script src="assets/theme.js"></script>
+<script src="assets/docs.js" defer></script>
+</head>
+<body data-slug="getting-started">
+<a class="skip" href="#content">К содержимому</a>
+<header class="top">
+  <a class="brand" href="../"><img src="../icon.png" alt="" width="26" height="26"><span>OutTalk</span></a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a class="crumb" href="./">Документация</a>
+  <div class="search" role="search">
+    <svg class="search-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Поиск по документации…" aria-label="Поиск по документации" autocomplete="off" spellcheck="false" aria-controls="results" aria-expanded="false">
+    <div id="results" class="results" role="listbox" aria-label="Результаты поиска" hidden></div>
+  </div>
+  <button id="theme" class="theme" type="button" aria-label="Сменить тему" title="Сменить тему"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="Разделы документации"><details class="side-box" open><summary>Разделы</summary><div class="group"><div class="group-name">Что нового</div><ul><li><a href="changelog.html">Что нового</a></li></ul></div><div class="group"><div class="group-name">Введение</div><ul><li><a href="overview.html">Обзор проекта</a></li><li><a href="getting-started.html" aria-current="page">Быстрый старт</a></li></ul></div><div class="group"><div class="group-name">Архитектура</div><ul><li><a href="architecture.html">Архитектура</a></li><li><a href="local-data-offline.html">Локальные данные и recovery</a></li><li><a href="processes-ipc.html">Процессы и IPC</a></li><li><a href="domain-model.html">Доменная модель</a></li><li><a href="provider-model.html">Модель провайдеров</a></li></ul></div><div class="group"><div class="group-name">Exchange</div><ul><li><a href="exchange-ews.html">Exchange: протокол EWS</a></li><li><a href="exchange-auth-network.html">Exchange: аутентификация и сеть</a></li><li><a href="exchange-mapping.html">Exchange: маппинг данных</a></li><li><a href="office-addins.html">Exchange: надстройки Outlook</a></li></ul></div><div class="group"><div class="group-name">IMAP / SMTP</div><ul><li><a href="imap.html">IMAP / SMTP: протокол и маппинг</a></li></ul></div><div class="group"><div class="group-name">Безопасность</div><ul><li><a href="security.html">Безопасность</a></li><li><a href="smime.html">S/MIME: зашифрованные и подписанные письма</a></li></ul></div><div class="group"><div class="group-name">Плагины</div><ul><li><a href="plugins-architecture.html">Архитектура плагинов</a></li></ul></div><div class="group"><div class="group-name">Интерфейс</div><ul><li><a href="ui.html">Интерфейс и состояние</a></li><li><a href="settings.html">Настройки</a></li><li><a href="shortcuts.html">Горячие клавиши</a></li></ul></div><div class="group"><div class="group-name">Эксплуатация</div><ul><li><a href="build-run.html">Сборка и запуск</a></li><li><a href="debugging.html">Отладка</a></li><li><a href="performance.html">Производительность</a></li><li><a href="dev-process.html">Процесс и агенты</a></li><li><a href="distribution.html">Дистрибуция и обновления</a></li></ul></div><div class="group"><div class="group-name">Справочник</div><ul><li><a href="adr.html">Архитектурные решения (ADR)</a></li><li><a href="roadmap.html">Дорожная карта</a></li></ul></div></details></nav>
+<main id="content" class="main" tabindex="-1">
+<div class="kicker">Введение</div>
+<article class="markdown"><h1 id="быстрый-старт">Быстрый старт</h1>
+<h2 id="требования">Требования</h2>
+<ul>
+<li><strong>Node.js v24</strong> (см. <code>.nvmrc</code>). Проект кросс-платформенный — разработка ведётся на <strong>macOS</strong> и <strong>Windows</strong>.</li>
+<li>macOS: Node иногда не в <code>PATH</code> → <code>export PATH=&quot;$HOME/.local/nodejs/bin:$PATH&quot;</code>. Для сборки <code>.app</code> — Xcode Command Line Tools.</li>
+<li>Windows: Node 24 через <a href="https://github.com/Schniz/fnm" target="_blank" rel="noopener noreferrer">fnm</a>/nvm-windows или установщик с nodejs.org; готовая сборка — x64.</li>
+</ul>
+<h2 id="разработка">Разработка</h2>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># macOS</span>
+<span class="hljs-built_in">cd</span> ~/outtalk
+<span class="hljs-comment"># Windows (PowerShell)</span>
+<span class="hljs-built_in">cd</span> <span class="hljs-variable">$HOME</span>\src\outtalk
+
+npm install
+npm run dev        <span class="hljs-comment"># electron-vite dev с горячей перезагрузкой (обе ОС)</span>
+</code></pre>
+<h2 id="готовое-приложение">Готовое приложение</h2>
+<pre><code class="hljs language-bash">npm run reinstall  <span class="hljs-comment"># кросс-платформенно (scripts/reinstall.mjs)</span>
+</code></pre>
+<ul>
+<li><strong>macOS</strong> — собирает <code>.app</code>, ставит в <code>/Applications</code> с ad-hoc подписью; запуск через Launchpad/Spotlight.</li>
+<li><strong>Windows</strong> — собирает <code>release/win-unpacked/OutTalk.exe</code> и печатает путь; для NSIS-установщика/portable — <code>npm run dist:win</code>.</li>
+</ul>
+<p>Подробности — в разделе <a href="build-run.html">Сборка и запуск</a>.</p>
+<h2 id="первый-запуск">Первый запуск</h2>
+<p>Без подключённого аккаунта приложение сразу открывает <strong>экран подключения</strong> (Настройки → «Ящики», форма «Подключить Microsoft Exchange» раскрыта сразу) — никаких примеров писем, которые можно принять за настоящие.</p>
+<h2 id="демо-режим-opt-in">Демо-режим (opt-in)</h2>
+<p>Для превью интерфейса без реального ящика есть встроенный <strong>демо-провайдер</strong> (<code>DemoProvider</code>, тот же контракт, что и Exchange). Он <strong>выключен по умолчанию</strong> и выбирается только сочетанием <code>OUTTALK_DEMO=1</code> и явного внутреннего <code>accountId === &#x27;demo&#x27;</code>:</p>
+<pre><code class="hljs language-bash">npm run dev:demo      <span class="hljs-comment"># dev-режим с демо-ящиком</span>
+</code></pre>
+<p>Тот же режим использует E2E (<code>npm run e2e</code>) для офлайн-детерминированных тестов. В main <code>resolveProvider</code> из <code>providers/access.ts</code> требует одновременно флаг и ID <code>demo</code>; пустой, отсутствующий или неизвестный ID всегда возвращает ошибку <code>auth</code>. Поэтому реальному пользователю фейковые письма не покажутся. Решение и его мотивация — <a href="adr.html#adr-0032-демо-ящик--opt-in-первый-запуск-ведёт-на-подключение">ADR-0032</a>.</p>
+<h2 id="подключение-exchange">Подключение Exchange</h2>
+<p><strong>Настройки → Подключить Microsoft Exchange:</strong></p>
+<table><thead><tr><th>Поле</th><th>Описание</th></tr></thead><tbody><tr><td>Email</td><td>Адрес ящика, напр. <code>user@company.com</code></td></tr><tr><td>Логин</td><td><code>DOMAIN\user</code> или <code>user@company.com</code> (как в Outlook)</td></tr><tr><td>Пароль</td><td>Пароль ящика</td></tr><tr><td>EWS URL</td><td>Напр. <code>https://mail.company.com/EWS/Exchange.asmx</code>. Пусто → попытка Autodiscover (ограниченно)</td></tr><tr><td>Авторизация</td><td><strong>Basic</strong> (по умолчанию); NTLM — режим совместимости с обязательной packaged live-проверкой перед релизом</td></tr><tr><td>Через системный прокси</td><td>По умолчанию выкл. — прямое соединение</td></tr><tr><td>Игнорировать сертификат</td><td>Для внутренних/самоподписанных CA</td></tr></tbody></table>
+<blockquote>
+<p><strong>Почему Basic по умолчанию?</strong> Это основной проверенный путь. Текущий <code>@ewsjs/ntlm-client@3.0.1</code> считает NT-хэш через <code>js-md4</code>, поэтому <code>NODE_OPTIONS=--openssl-legacy-provider</code> больше не нужен; однако полный NTLM challenge-response в packaged Electron остаётся отдельным live release-gate. Подробности — в разделе <span>Аутентификация и сеть</span>.</p>
+</blockquote>
+<p>Пароль шифруется средствами ОС (<code>safeStorage</code>: Keychain на macOS, DPAPI на Windows) и хранится только локально — см. <a href="security.html">Безопасность</a>.</p>
+<h2 id="отладка-подключения">Отладка подключения</h2>
+<p>Если подключение не удаётся, используйте зонды (креды берутся из <code>.env.local</code>):</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cp</span> .env.exchange.example .env.local   <span class="hljs-comment"># заполнить</span>
+npm run ews:check   <span class="hljs-comment"># автономная проверка EWS: папки, письма, одно письмо</span>
+npm run ews:<span class="hljs-built_in">test</span>    <span class="hljs-comment"># прогон реального ExchangeProvider против сервера</span>
+</code></pre>
+<p>Подробнее — в разделе <a href="debugging.html">Отладка</a>.</p></article>
+</main>
+<aside class="toc" aria-label="На этой странице"><div class="toc-title">На этой странице</div><ol><li class="d2"><a href="#требования">Требования</a></li><li class="d2"><a href="#разработка">Разработка</a></li><li class="d2"><a href="#готовое-приложение">Готовое приложение</a></li><li class="d2"><a href="#первый-запуск">Первый запуск</a></li><li class="d2"><a href="#демо-режим-opt-in">Демо-режим (opt-in)</a></li><li class="d2"><a href="#подключение-exchange">Подключение Exchange</a></li><li class="d2"><a href="#отладка-подключения">Отладка подключения</a></li></ol></aside>
+</div>
+<footer class="foot"><span>© OutTalk</span><a href="../">Сайт</a><a href="./">Документация</a></footer>
+</body>
+</html>

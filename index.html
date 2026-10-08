@@ -130,6 +130,9 @@
         opacity: 0;
         animation: fade 0.8s ease 1.2s forwards;
       }
+      .top-link + .top-link {
+        margin-left: 1.5rem;
+      }
       .top-link:hover {
         color: var(--fg);
       }
@@ -588,6 +591,7 @@
           </g>
         </svg>
         <span class="wordmark">OutTalk</span>
+        <a class="top-link" href="docs/">Документация</a>
         <a class="top-link" id="releases-link" href="#">Все версии</a>
       </header>
 
@@ -672,6 +676,7 @@
 
       <footer>
         <span>© OutTalk</span>
+        <a href="docs/">Документация</a>
         <a id="releases-footer" href="#">Релизы</a>
         <a href="latest.json">Фид обновлений</a>
       </footer>

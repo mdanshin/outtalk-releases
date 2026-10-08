@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Обзор проекта — Документация OutTalk</title>
+<meta name="description" content="OutTalk — продвинутый настольный почтовый клиент для macOS и Windows, построенный на Electron. Это самостоятельный многофункциональный продукт, а не оболочка дл">
+<link rel="icon" href="../icon.png">
+<link rel="stylesheet" href="assets/docs.css">
+<script src="assets/theme.js"></script>
+<script src="assets/docs.js" defer></script>
+</head>
+<body data-slug="overview">
+<a class="skip" href="#content">К содержимому</a>
+<header class="top">
+  <a class="brand" href="../"><img src="../icon.png" alt="" width="26" height="26"><span>OutTalk</span></a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a class="crumb" href="./">Документация</a>
+  <div class="search" role="search">
+    <svg class="search-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Поиск по документации…" aria-label="Поиск по документации" autocomplete="off" spellcheck="false" aria-controls="results" aria-expanded="false">
+    <div id="results" class="results" role="listbox" aria-label="Результаты поиска" hidden></div>
+  </div>
+  <button id="theme" class="theme" type="button" aria-label="Сменить тему" title="Сменить тему"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="Разделы документации"><details class="side-box" open><summary>Разделы</summary><div class="group"><div class="group-name">Что нового</div><ul><li><a href="changelog.html">Что нового</a></li></ul></div><div class="group"><div class="group-name">Введение</div><ul><li><a href="overview.html" aria-current="page">Обзор проекта</a></li><li><a href="getting-started.html">Быстрый старт</a></li></ul></div><div class="group"><div class="group-name">Архитектура</div><ul><li><a href="architecture.html">Архитектура</a></li><li><a href="local-data-offline.html">Локальные данные и recovery</a></li><li><a href="processes-ipc.html">Процессы и IPC</a></li><li><a href="domain-model.html">Доменная модель</a></li><li><a href="provider-model.html">Модель провайдеров</a></li></ul></div><div class="group"><div class="group-name">Exchange</div><ul><li><a href="exchange-ews.html">Exchange: протокол EWS</a></li><li><a href="exchange-auth-network.html">Exchange: аутентификация и сеть</a></li><li><a href="exchange-mapping.html">Exchange: маппинг данных</a></li><li><a href="office-addins.html">Exchange: надстройки Outlook</a></li></ul></div><div class="group"><div class="group-name">IMAP / SMTP</div><ul><li><a href="imap.html">IMAP / SMTP: протокол и маппинг</a></li></ul></div><div class="group"><div class="group-name">Безопасность</div><ul><li><a href="security.html">Безопасность</a></li><li><a href="smime.html">S/MIME: зашифрованные и подписанные письма</a></li></ul></div><div class="group"><div class="group-name">Плагины</div><ul><li><a href="plugins-architecture.html">Архитектура плагинов</a></li></ul></div><div class="group"><div class="group-name">Интерфейс</div><ul><li><a href="ui.html">Интерфейс и состояние</a></li><li><a href="settings.html">Настройки</a></li><li><a href="shortcuts.html">Горячие клавиши</a></li></ul></div><div class="group"><div class="group-name">Эксплуатация</div><ul><li><a href="build-run.html">Сборка и запуск</a></li><li><a href="debugging.html">Отладка</a></li><li><a href="performance.html">Производительность</a></li><li><a href="dev-process.html">Процесс и агенты</a></li><li><a href="distribution.html">Дистрибуция и обновления</a></li></ul></div><div class="group"><div class="group-name">Справочник</div><ul><li><a href="adr.html">Архитектурные решения (ADR)</a></li><li><a href="roadmap.html">Дорожная карта</a></li></ul></div></details></nav>
+<main id="content" class="main" tabindex="-1">
+<div class="kicker">Введение</div>
+<article class="markdown"><h1 id="обзор-проекта">Обзор проекта</h1>
+<p><strong>OutTalk</strong> — продвинутый настольный почтовый клиент для macOS и Windows, построенный на Electron. Это самостоятельный многофункциональный продукт, а не оболочка для одной почтовой системы. Сейчас полностью поддерживается корпоративный <strong>Microsoft Exchange</strong> через протокол <strong>EWS</strong> (Exchange Web Services); архитектура позволяет добавлять Gmail, IMAP и другие провайдеры без переработки интерфейса и доменного ядра.</p>
+<h2 id="философия">Философия</h2>
+<ul>
+<li><strong>Продукт важнее провайдера.</strong> Письма, беседы, календарь, поиск, черновики, вложения, горячие клавиши и расширения составляют OutTalk. Совместимость с конкретными серверами — возможность продукта, а не его определение.</li>
+<li><strong>Провайдер-агностичное ядро.</strong> Весь код выше слоя провайдеров оперирует единой доменной моделью и ничего не знает про EWS/IMAP/Graph. Добавление нового бэкенда = новый класс, реализующий интерфейс <code>MailProvider</code>, плюс одна ветка в фабрике.</li>
+<li><strong>Безопасность по умолчанию.</strong> Секреты шифруются средствами ОС и никогда не покидают машину. HTML писем санитайзится перед рендером. Рендерер изолирован (<code>contextIsolation</code>).</li>
+<li><strong>Документация как код.</strong> Эта документация — часть репозитория (Markdown в <code>src/renderer/src/content/docs/</code>), версионируется вместе с кодом и рендерится прямо в приложении. Любое изменение кода сопровождается обновлением соответствующего раздела.</li>
+<li><strong>Красота и детали.</strong> Дизайн-система, две темы, анимации — на уровне лучших продуктов.</li>
+</ul>
+<h2 id="технологический-стек">Технологический стек</h2>
+<table><thead><tr><th>Слой</th><th>Технологии</th></tr></thead><tbody><tr><td>Оболочка</td><td>Electron 44 (Chromium 152, Node 24, ABI 149), electron-vite 2, electron-builder 26</td></tr><tr><td>UI</td><td>React 18, TypeScript 5, Tailwind CSS 3 (shadcn-стиль), Framer Motion 11, lucide-react</td></tr><tr><td>Состояние</td><td>Zustand 5 (+ <code>persist</code>)</td></tr><tr><td>Exchange</td><td><code>ews-javascript-api</code>, <code>@ewsjs/xhr</code></td></tr><tr><td>Безопасность</td><td>Electron <code>safeStorage</code>, DOMPurify</td></tr><tr><td>Документация</td><td>react-markdown, remark-gfm, rehype-highlight, rehype-slug</td></tr></tbody></table>
+<h2 id="карта-документации">Карта документации</h2>
+<ul>
+<li><strong>Введение</strong> — этот обзор и <span>быстрый старт</span>.</li>
+<li><strong>Архитектура</strong> — <span>общая архитектура</span>, <span>процессы и IPC</span>, <span>доменная модель</span>, <span>модель провайдеров</span>.</li>
+<li><strong>Exchange</strong> — <span>протокол EWS</span>, <span>аутентификация и сеть</span>, <span>маппинг данных</span>. Здесь описаны буквально протоколы и детали их реализации.</li>
+<li><strong>Безопасность</strong> — модель угроз и защитные меры.</li>
+<li><strong>Интерфейс</strong> — layout, компоненты, сторы, дизайн-система.</li>
+<li><strong>Эксплуатация</strong> — <span>сборка/запуск</span>, <span>отладка</span>.</li>
+<li><strong>Справочник</strong> — <span>ADR</span> (журнал архитектурных решений) и <span>дорожная карта</span>.</li>
+</ul>
+<h2 id="текущий-статус">Текущий статус</h2>
+<ul>
+<li>✅ Шаблон приложения и дизайн-система.</li>
+<li>✅ MVP Exchange: папки, список писем, чтение (санитайзенный HTML), вложения, отправка/ответ/пересылка, прочитано/непрочитано, флаг, удаление, поиск в папке, пагинация.</li>
+<li>✅ Подтверждено на живом сервере Exchange 2016.</li>
+<li>✅ Серверный поиск по папке (EWS AQS) и inline-картинки (<code>cid:</code> → <code>data:</code>).</li>
+<li>✅ Календарь День/Неделя/Месяц: непрерывная лента дней и недель, неподвижная шкала времени, выделенные выходные, настраиваемый рабочий день.</li>
+<li>✅ Контакты: поиск по личной адресной книге и корпоративному GAL; карточка человека со сведениями из справочника (должность, отдел, офис, телефоны, руководитель и подчинённые) — одна и та же в письме и в адресной книге.</li>
+<li>✅ Надстройки Outlook, развёрнутые администратором Exchange: проверка в Настройках и кнопки надстроек (например, сервиса видеовстреч) в окне новой встречи своего ящика — своя прослойка <code>office.js</code>, брокер в main, отдельная сессия на надстройку (<a href="office-addins.html">Exchange: надстройки Outlook</a>, <a href="adr.html#adr-0139-надстройки-outlook-развёрнутые-администратором-exchange">ADR-0139</a>). Живой прогон с настоящей надстройкой — впереди.</li>
+<li>⏳ Exchange «до конца»: расширяемая область поиска «Везде», сериализация нескольких аккаунтов, пакетная загрузка вложений и дальнейшее усиление надёжности.</li>
+<li>🔜 Gmail/IMAP и расширение контактов до полного списка и редактирования.</li>
+</ul></article>
+</main>
+<aside class="toc" aria-label="На этой странице"><div class="toc-title">На этой странице</div><ol><li class="d2"><a href="#философия">Философия</a></li><li class="d2"><a href="#технологический-стек">Технологический стек</a></li><li class="d2"><a href="#карта-документации">Карта документации</a></li><li class="d2"><a href="#текущий-статус">Текущий статус</a></li></ol></aside>
+</div>
+<footer class="foot"><span>© OutTalk</span><a href="../">Сайт</a><a href="./">Документация</a></footer>
+</body>
+</html>
