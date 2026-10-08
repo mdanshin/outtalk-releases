@@ -4,10 +4,6 @@
   "notes": "Релиз v0.1.25",
   "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.25/OutTalk-0.1.25-arm64.dmg",
   "downloads": {
-    "win": {
-      "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.24/OutTalk-Setup-0.1.24.exe",
-      "size": 123455095
-    },
     "mac": {
       "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.25/OutTalk-0.1.25-arm64.dmg",
       "size": 141103716
