@@ -33,7 +33,7 @@
 <p>OutTalk следует классической трёхпроцессной модели Electron с жёстким разделением ответственности и единой доменной моделью, общей для всех процессов.</p>
 <h2 id="слои">Слои</h2>
 <pre><code class="hljs language-scss">┌────────────────────────── renderer (React) ──────────────────────────┐
-│  pages/      Mail · Calendar · Contacts · Settings · Docs              │
+│  pages/      Mail · Calendar · AddressBook · Settings · Docs           │
 │  components/ layout (NavRail, FolderPane) · mail · docs · ui          │
 │  store/      useUi · useAccounts · useMail · useCompose · useContacts  │
 │  lib/        mail (IPC-обёртка) · sanitize · <span class="hljs-selector-tag">nav</span> · utils              │
@@ -96,6 +96,8 @@
                                   общие для unit-тестов санитайзера и демо-ящика (OUTTALK_DEMO_SPACING=1; ADR-0162)
     attached-message.ts         правила письма во вложении: isMessageAttachment / isOutlookMsgAttachment /
                                   isAttachedPath / MAX_ATTACHED_DEPTH — одно для main и renderer (ADR-0129)
+    org-directory.ts            копия каталога организации: проверка IPC в обе стороны (normalizeOrgQuery /
+                                  normalizeOrgStatus / normalizeOrgPage), правила букв и сортировки (ADR-0172)
   main/
     index.ts                    окно + жизненный цикл (первый импорт — util/quietLibs)
     ipc/{mail,window,diag,…}.ts регистрация IPC-обработчиков (не зависят друг от друга)
@@ -141,8 +143,22 @@
                                 проверка портов), system-dns.ts (серверы имён системы: scutil --dns /
                                 resolv.conf / USERDNSDOMAIN), vip-store.ts
                                 (userData/directory-vip.json, safeStorage, не роумится), vip-service.ts
-                                (расписание, вход по credentialId, предохранитель), vip-runtime.ts (проводка)
+                                (расписание, вход по credentialId, предохранитель), vip-runtime.ts (проводка);
+                                recipient-history.ts — память «Недавние» и «Часто пишете» (ADR-0171:
+                                userData/recipient-history.json, safeStorage, не роумится),
+                                recipient-history-runtime.ts (проводка, демо-память);
+                                копия каталога организации на устройстве (ADR-0172):
+                                org-index.ts (индекс в памяти: сортировка, списки, буквы,
+                                фильтры, поиск), org-directory-store.ts (userData/address-book/
+                                &lt;хэш входа&gt;.bin, AES-256-GCM + ключ под safeStorage, по входу),
+                                org-directory-service.ts (когда спрашивать сервер, одна проверка
+                                на вход, фоновая полоса), org-directory-runtime.ts (проводка,
+                                событие addressBook:org:changed, уборка копий)
     ipc/directory-vip.ts        каналы directoryVip:* (адреса — окну ящика, остальное — главному окну)
+    ipc/address-book.ts         каналы addressBook:* — что умеет книга, поиск и уточнение имени,
+                                недавние и частые (права — как у писем ящика; ADR-0171);
+                                addressBook:org:* — состояние, срезы, «Обновить» и записи копии
+                                каталога (ADR-0172)
     attached-message/
       parse.ts                  RFC 822 → AttachedMessage + части (postal-mime, пределы; ADR-0129)
       store.ts                  AttachedMessageStore — кэш разобранного по «ящик+письмо+вложение+путь»
@@ -152,12 +168,20 @@
       registry.ts               фабрика провайдера по типу аккаунта
       demo.ts                   DemoProvider (моки)
       demo-eml.ts               письмо-вложение демо-ящика для читалки (ADR-0129)
+      demo-org-directory.ts     выдуманная организация company.com для копии каталога, поведение
+                                «сервера» — OUTTALK_DEMO_ORG (ADR-0172)
       exchange/
         ews.ts                  фабрика ExchangeService (auth/URL/прокси/keep-alive)
         provider.ts             ExchangeProvider (реализация MailProvider)
         diagnose.ts             рунбук теста подключения + verdictOf
         autodiscover-ad.ts      Autodiscover GetUserSettings → ActiveDirectoryServer для «Найти
                                 автоматически» сервер каталога (один запрос, без редиректов; ADR-0153)
+        address-book.ts         разбор ResolveNames в записи адресной книги, псевдоним и другие
+                                адреса карточки (ADR-0171)
+        oab-download.ts         автономная адресная книга: Autodiscover → oab.xml → потоковый GET
+                                полного файла тем же транспортом (ADR-0172)
+        oab-records.ts          полный файл OAB v4 → записи каталога (размер, SHA-1, CRC, пределы)
+        oab-worker.ts, oab-worker-host.ts  разбор в потоке-работнике (?nodeWorker, 768 МиБ, 60 с)
     util/
       result.ts                 Result / MailError / guarded
       service-url.ts            validServiceUrl — https-only адрес сервера (EWS URL, baseUrl Jira/Confluence);
@@ -186,15 +210,23 @@
                                 vip + useVipList (эффективный список VIP: ручной ∪ каталог, ADR-0153;
                                 уровни none/vip/super, супер-VIP вручную, ADR-0161), vip-glow (классы
                                 света VIP и супер-VIP), plugin-vip (ответ кадру { vip, super }),
-                                directory-vip (обёртка моста directoryVip:*, ADR-0153)
+                                directory-vip (обёртка моста directoryVip:*, ADR-0153),
+                                address-book (обёртка моста addressBook:* и событие панели выбора
+                                получателей, ADR-0171), useOrgDirectory (состояние копии каталога
+                                и срез для виртуального списка, ADR-0172)
     store/                      useUi, useAccounts, useMail, useCompose, useContacts,
                                 useCalendar, useMeetingReminders (ADR-0056), useDiagnostics,
                                 useRoaming (штампы переноса, ADR-0067),
-                                useDirectoryVip (VIP из каталога — только память, ADR-0153)
+                                useDirectoryVip (VIP из каталога — только память, ADR-0153),
+                                useAddressBookView (вид списков адресной книги: карточки или
+                                таблица по списку, ADR-0171)
     components/                 layout, mail, diagnostics, docs, ui (Tooltip…),
+                                contacts (карточка человека, свои контакты), address-book
+                                (EntryViews, RecipientPicker, Disambiguation — ADR-0171; OrgBrowser,
+                                OrgEntryCard — каталог по копии, ADR-0172),
                                 strip (TopStripSlot, UpcomingMeetingBanner, ReminderAnnouncer)
     content/docs/               ← эта документация
-    pages/                      Mail, Calendar, Contacts, Settings, Docs
+    pages/                      Mail, Calendar, AddressBook (раздел «Адресная книга», ADR-0171), Settings, Docs
 </code></pre>
 <h2 id="поток-данных-открыть-письмо">Поток данных: открыть письмо</h2>
 <pre><code class="hljs language-bash">ReadingPane → useMail.selectMessage(accountId, <span class="hljs-built_in">id</span>)
