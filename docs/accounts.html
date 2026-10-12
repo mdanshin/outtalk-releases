@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Подключение ящиков — Документация OutTalk</title>
+<meta name="description" content="Почтовые ящики подключаются в «Настройки → Ящики». Параметры вводятся в приложении; не отправляйте пароли и коды доступа в переписке, снимках экрана или обращен">
+<link rel="icon" href="../icon.png">
+<link rel="stylesheet" href="assets/docs.css">
+<script src="assets/theme.js"></script>
+<script src="assets/docs.js" defer></script>
+</head>
+<body data-slug="accounts">
+<a class="skip" href="#content">К содержимому</a>
+<header class="top">
+  <a class="brand" href="../"><img src="../icon.png" alt="" width="26" height="26"><span>OutTalk</span></a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a class="crumb" href="./">Документация</a>
+  <div class="search" role="search">
+    <svg class="search-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Поиск по документации…" aria-label="Поиск по документации" autocomplete="off" spellcheck="false" aria-controls="results" aria-expanded="false">
+    <div id="results" class="results" role="listbox" aria-label="Результаты поиска" hidden></div>
+  </div>
+  <button id="theme" class="theme" type="button" aria-label="Сменить тему" title="Сменить тему"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="Разделы документации"><details class="side-box" open><summary>Разделы</summary><div class="group"><div class="group-name">Помощь</div><ul><li><a href="changelog.html">Что нового</a></li><li><a href="debugging.html">Проблемы и решения</a></li></ul></div><div class="group"><div class="group-name">Начало работы</div><ul><li><a href="overview.html">Обзор</a></li><li><a href="getting-started.html">Быстрый старт</a></li><li><a href="accounts.html" aria-current="page">Подключение ящиков</a></li><li><a href="distribution.html">Установка и обновления</a></li></ul></div><div class="group"><div class="group-name">Работа в приложении</div><ul><li><a href="ui.html">Почта</a></li><li><a href="calendar.html">Календарь</a></li><li><a href="contacts.html">Контакты и VIP</a></li><li><a href="tasks.html">Задачи</a></li></ul></div><div class="group"><div class="group-name">Настройки и справка</div><ul><li><a href="settings.html">Настройки</a></li><li><a href="shortcuts.html">Горячие клавиши</a></li><li><a href="plugins.html">Плагины и надстройки</a></li><li><a href="local-data-offline.html">Данные и работа без сети</a></li></ul></div><div class="group"><div class="group-name">Безопасность</div><ul><li><a href="security.html">Безопасность и приватность</a></li><li><a href="smime.html">Защита писем S/MIME</a></li></ul></div></details></nav>
+<main id="content" class="main" tabindex="-1">
+<div class="kicker">Начало работы</div>
+<article class="markdown"><h1 id="подключение-и-управление-ящиками">Подключение и управление ящиками</h1>
+<p>Почтовые ящики подключаются в «Настройки → Ящики». Параметры вводятся в приложении; не отправляйте пароли и коды доступа в переписке, снимках экрана или обращениях за помощью.</p>
+<h2 id="microsoft-exchange">Microsoft Exchange</h2>
+<p>Выберите Microsoft Exchange и заполните форму.</p>
+<table><thead><tr><th>Поле</th><th>Что указать</th></tr></thead><tbody><tr><td>Email</td><td>Полный адрес вашего ящика; пример формата: <code>user@example.com</code></td></tr><tr><td>Логин</td><td>Имя входа, которое выдал администратор: адрес почты или формат <code>DOMAIN\user</code></td></tr><tr><td>Пароль</td><td>Пароль учётной записи</td></tr><tr><td>EWS URL</td><td>Адрес подключения, выданный администратором; пример формата: <code>https://mail.example.com/EWS/Exchange.asmx</code></td></tr><tr><td>Авторизация</td><td>Разрешённый сервером способ; если вход с выбранным способом не проходит, уточните настройки у администратора</td></tr><tr><td>Системный прокси</td><td>Включайте, если он необходим для доступа к серверу</td></tr></tbody></table>
+<p>Автоматическое определение адреса доступно не для всех конфигураций. При ошибке используйте точный адрес подключения, полученный у администратора, вместо подбора адресов наугад.</p>
+<p>Не отключайте проверку сертификата ради устранения ошибки подключения. Для сервера с собственным сертификатом сначала уточните у администратора, как установить доверенный сертификат.</p>
+<h2 id="imap--smtp">IMAP / SMTP</h2>
+<p>Выберите готовый пресет почтового сервиса или «Другой». Для собственного сервера потребуются параметры входящей почты IMAP и исходящей почты SMTP: имена серверов, порты, режимы защищённого подключения и логин.</p>
+<table><thead><tr><th>Параметр</th><th>Как заполнить</th></tr></thead><tbody><tr><td>Email и логин</td><td>Адрес ящика и имя входа, указанные почтовым сервисом</td></tr><tr><td>Пароль</td><td>Обычный пароль или пароль приложения — по требованиям сервиса</td></tr><tr><td>IMAP</td><td>Имя сервера входящей почты, порт и защищённый режим подключения</td></tr><tr><td>SMTP</td><td>Имя сервера исходящей почты, порт и защищённый режим подключения</td></tr><tr><td>Копия отправленных</td><td>Оставляйте включённой, если сервер сам не сохраняет отправленные письма; готовый пресет может выбрать это за вас</td></tr></tbody></table>
+<p>Не вводите адрес сайта в поле имени сервера: здесь нужно имя вроде <code>imap.example.com</code>, без пути страницы.</p>
+<h2 id="пароль-приложения">Пароль приложения</h2>
+<p>Некоторые сервисы не принимают обычный пароль в почтовых приложениях. Создайте отдельный пароль приложения в настройках безопасности вашего почтового аккаунта и используйте его в OutTalk. Подсказка в форме подключения помогает найти нужную настройку.</p>
+<p>Пароль приложения тоже даёт доступ к почте. Не публикуйте его и отзывайте в настройках сервиса, если он оказался раскрыт.</p>
+<h2 id="несколько-ящиков-и-изменения">Несколько ящиков и изменения</h2>
+<p>Добавляйте и редактируйте ящики в том же разделе настроек. Перед отправкой проверяйте поле «От»: от него зависят отправитель, доступные подписи и сертификаты шифрования.</p>
+<p>При удалении подключения OutTalk перестаёт работать с этим ящиком. Это не команда удаления ящика на почтовом сервере. Перед удалением подключения сохраните нужные локальные данные и проверьте <a href="local-data-offline.html">правила работы без сети</a>.</p>
+<p>Если вход не удаётся, используйте <a href="debugging.html">проверки подключения</a>.</p></article>
+</main>
+<aside class="toc" aria-label="На этой странице"><div class="toc-title">На этой странице</div><ol><li class="d2"><a href="#microsoft-exchange">Microsoft Exchange</a></li><li class="d2"><a href="#imap--smtp">IMAP / SMTP</a></li><li class="d2"><a href="#пароль-приложения">Пароль приложения</a></li><li class="d2"><a href="#несколько-ящиков-и-изменения">Несколько ящиков и изменения</a></li></ol></aside>
+</div>
+<footer class="foot"><span>© OutTalk</span><a href="../">Сайт</a><a href="./">Документация</a></footer>
+</body>
+</html>
