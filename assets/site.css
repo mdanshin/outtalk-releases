@@ -471,6 +471,98 @@ h1 em {
   text-align: center;
 }
 
+/* ───────── форма оплаты ЮKassa (ADR-0193): свой вид, без стилей платёжного сервиса ───────── */
+.pay {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+}
+.pay-label {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+.pay-email {
+  width: 100%;
+  min-width: 0;
+  padding: 0.78rem 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.98rem;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.pay-email::placeholder {
+  color: var(--dim);
+}
+.pay-email:focus {
+  outline: none;
+  border-color: var(--check);
+  box-shadow: 0 0 0 3px var(--chip);
+}
+.pay-email:user-invalid {
+  border-color: #e5484d;
+}
+.pay-btn {
+  width: 100%;
+  margin-top: 0.15rem;
+  cursor: pointer;
+}
+.pay-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+  transform: none;
+}
+.pay-btn:disabled::after {
+  display: none;
+}
+.pay-btn:focus-visible {
+  outline: 2px solid var(--check);
+  outline-offset: 2px;
+}
+.pay-note,
+.pay-legal {
+  margin: 0.65rem 0 0;
+  color: var(--dim);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  text-align: center;
+}
+.pay-legal {
+  margin-top: 0.3rem;
+}
+.pay-legal a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.pay-legal a:hover {
+  color: var(--fg);
+}
+
+/* ───────── «Спасибо за оплату» ───────── */
+/* Специфичнее, чем `.section > h2` ниже по файлу. */
+.section.section-tight {
+  margin-top: 2.5rem;
+}
+.section.section-tight > h2 {
+  margin-bottom: 1.6rem;
+  font-size: clamp(1.45rem, 2.8vw, 1.9rem);
+}
+.section.section-tight + .section-tight {
+  margin-top: 4rem;
+}
+.page-thanks .steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.page-thanks .questions {
+  margin-top: 0;
+}
+
 /* ───────── кнопки ───────── */
 .btn {
   position: relative;
@@ -879,6 +971,154 @@ h1 em {
   line-height: 1.4;
 }
 
+/* ───────── каталог плагинов (plugins/) ───────── */
+.plugin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+.pcard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  scroll-margin-top: 88px;
+}
+.pcard-head {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+}
+.pcard-tile,
+.pcard-preview {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+}
+.pcard-preview {
+  object-fit: contain;
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--line) inset;
+}
+.pcard-tile {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 10px 24px -14px rgba(14, 20, 36, 0.6);
+}
+.pcard-tile svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tile-h0 { background: linear-gradient(135deg, #1687ff, #224bff); }
+.tile-h1 { background: linear-gradient(135deg, #16b8d6, #1687ff); }
+.tile-h2 { background: linear-gradient(135deg, #5428e8, #8a36ff); }
+.tile-h3 { background: linear-gradient(135deg, #12a37a, #0f8f9a); }
+.tile-h4 { background: linear-gradient(135deg, #e0782a, #d6452f); }
+.tile-h5 { background: linear-gradient(135deg, #c03ea8, #7b3ae0); }
+.tile-h6 { background: linear-gradient(135deg, #2f6fd6, #16a6c9); }
+.tile-h7 { background: linear-gradient(135deg, #6b4ce0, #224bff); }
+.pcard-title {
+  min-width: 0;
+}
+.pcard h3 {
+  margin: 0;
+  font-size: 1.18rem;
+  font-weight: 680;
+}
+.pcard-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.6rem;
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.pcard-ver {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+.pcard-signed {
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--chip-fg);
+  font-weight: 600;
+}
+.pcard-desc {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+.pcard-rights {
+  flex: 1;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.pcard-label {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.pcard .checks {
+  flex: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  border-top: 0;
+  font-size: 0.88rem;
+}
+.pcard .checks li {
+  margin: 0.4rem 0;
+}
+.pcard-none {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.pcard-more summary {
+  margin-top: 0.3rem;
+  color: var(--link);
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+.pcard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.pcard-size {
+  color: var(--dim);
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+.pcard .btn svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ───────── подвал ───────── */
 .foot {
   position: relative;
@@ -907,6 +1147,15 @@ h1 em {
 .foot-seller a:hover {
   color: var(--fg);
 }
+/* Оговорка о товарных знаках: на всю ширину подвала, мельче и тише остального. */
+.foot-tm {
+  flex-basis: 100%;
+  max-width: 62rem;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -924,8 +1173,14 @@ h1 em {
     margin-inline: auto;
     gap: 2rem;
   }
-  .features {
+  .features,
+  .plugin-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .page-thanks .steps {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 36rem;
+    margin-inline: auto;
   }
   .doc-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -965,10 +1220,10 @@ h1 em {
     font-size: 16px;
   }
   .bar-in {
-    gap: 0.8rem;
+    gap: 0.55rem;
   }
   .bar-nav {
-    gap: 0.9rem;
+    gap: 0.75rem;
   }
   .bar-nav a[href='../docs/'] {
     display: none;
@@ -978,6 +1233,7 @@ h1 em {
   }
   .features,
   .steps,
+  .plugin-grid,
   .links-grid {
     grid-template-columns: minmax(0, 1fr);
   }

@@ -1,0 +1,67 @@
+# OutTalk: настройки Apache для зеркала сайта на виртуальном хостинге в РФ (ADR-0195).
+# Публикуется вместе с сайтом (scripts/site-mirror.mjs). GitHub Pages этот файл не читает.
+#
+# На хостинге с nginx перед Apache статические файлы может отдавать сам nginx — тогда типы и
+# заголовки ниже к ним не применяются. Обновлениям это не мешает: приложение и сайт запрашивают
+# latest.json и latest*.yml мимо кэша (no-store / параметр noCache). Что применилось — видно по
+# `curl -I` (docs/internal/distribution.md, «Переезд на хостинг в РФ», шаг проверок).
+
+# «Папка/» → её index.html; без списка файлов. `IndexIgnore *` вместо `Options -Indexes`: на
+# виртуальном хостинге `Options` в .htaccess может быть запрещён (тогда 500 на весь сайт, включая фид).
+IndexIgnore *
+DirectoryIndex index.html
+AddDefaultCharset utf-8
+
+# Типы файлов: фиды обновлений, установщики, пакеты плагинов.
+AddType text/yaml .yml .yaml
+AddType application/json .json
+AddType text/javascript .js
+AddType text/css .css
+AddType image/svg+xml .svg
+AddType image/webp .webp
+AddType application/vnd.microsoft.portable-executable .exe
+AddType application/x-apple-diskimage .dmg
+AddType application/zip .zip
+AddType application/octet-stream .blockmap .sig .outtalk-plugin
+
+# Канонический адрес: www → outtalk.ru и http → https одним переходом.
+# Хостинг стоит за прокси (nginx → Apache): признак HTTPS может прийти в заголовке X-Forwarded-Proto
+# или в переменной HTTPS. Перенаправляем, только если НИ ОДИН не говорит «https», — иначе на
+# странице по https получилась бы петля. Проверка после включения: см. docs/internal/distribution.md,
+# «Переезд на хостинг в РФ».
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^www\.outtalk\.ru$ [NC]
+  RewriteRule ^ https://outtalk.ru%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteCond %{ENV:HTTPS} !=on
+  RewriteRule ^ https://outtalk.ru%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "DENY"
+  Header always set Strict-Transport-Security "max-age=31536000"
+
+  # Порядок важен: следующее совпадение переопределяет предыдущее.
+  # Статика без версии в имени (стили, скрипты, картинки) — час.
+  Header set Cache-Control "public, max-age=3600"
+  # Страницы, фиды и каталог плагинов меняются при каждой публикации — всегда сверять с сервером.
+  <FilesMatch "\.(html|json|yml|yaml)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Версия в имени файла — содержимое под этим именем не меняется никогда.
+  <FilesMatch "^OutTalk-.+\.(exe|dmg|zip|blockmap|sig)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.outtalk-plugin$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# Служебный манифест публикации и файлы недокачанных загрузок — не для посетителей.
+<FilesMatch "^(\.outtalk-site-manifest\.json|.*\.upload-[0-9a-f]{16})$">
+  Require all denied
+</FilesMatch>

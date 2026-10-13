@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action https://yookassa.ru https://*.yookassa.ru https://yoomoney.ru https://*.yoomoney.ru">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Цены — OutTalk</title>
 <meta name="description" content="Цены OutTalk: почта бесплатно навсегда, 14 дней всех функций без карты, подписка для себя и лицензии для организаций.">
@@ -70,7 +70,7 @@
       <p class="price y"><span class="amount">2&nbsp;490&nbsp;₽</span><span class="per">в год</span></p>
       <p class="price-note y">≈&nbsp;208&nbsp;₽ в месяц — два месяца в подарок</p>
       <p class="price m"><span class="amount">249&nbsp;₽</span><span class="per">в месяц</span></p>
-      <p class="price-note m">Оплата помесячно, отказаться можно в любой момент</p>
+      <p class="price-note m">Разовая оплата за месяц, без автопродления</p>
       <ul class="checks">
         <li><b>Всё из «Почты»</b></li>
         <li>Календарь, занятость коллег и переговорных</li>
@@ -79,8 +79,31 @@
         <li>Плагины «Ритм», «Администрирование», «Спутник» и другие</li>
         <li>Лицензия на одного человека, до 3 компьютеров</li>
       </ul>
-      <a class="btn y" href="mailto:mdanshin@gmail.com?subject=OutTalk%20Pro%20%E2%80%94%20%D0%BF%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D0%B3%D0%BE%D0%B4">Купить на год</a>
-      <a class="btn m" href="mailto:mdanshin@gmail.com?subject=OutTalk%20Pro%20%E2%80%94%20%D0%BF%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D0%BC%D0%B5%D1%81%D1%8F%D1%86">Купить на месяц</a>
+      <form class="pay y" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8" data-receipt-items="[{&quot;text&quot;:&quot;Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 год, 1 пользователь&quot;,&quot;quantity&quot;:&quot;1&quot;,&quot;price&quot;:{&quot;amount&quot;:&quot;2490&quot;},&quot;paymentSubjectType&quot;:&quot;property_right&quot;,&quot;paymentMethodType&quot;:&quot;full_prepayment&quot;,&quot;tax&quot;:&quot;1&quot;}]">
+        <input type="hidden" name="shopId" value="1493466">
+        <input type="hidden" name="sum" value="2490">
+        <input type="hidden" name="customerNumber" value="Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 год, 1 пользователь. Ключ лицензии придёт на почту, указанную при оплате.">
+        <input type="hidden" name="shopSuccessURL" value="https://outtalk.ru/thanks/">
+        <input type="hidden" name="shopFailURL" value="https://outtalk.ru/pricing/">
+        <input type="hidden" name="ym_merchant_receipt" value="">
+        <label class="pay-label" for="pay-email-y">Email</label>
+        <input class="pay-email" id="pay-email-y" name="cps_email" type="email" required autocomplete="email" inputmode="email" maxlength="120" spellcheck="false" placeholder="name@example.com">
+        <button class="btn pay-btn" type="submit" disabled>Оплатить 2 490 ₽</button>
+      </form>
+      <form class="pay m" action="https://yookassa.ru/integration/simplepay/payment" method="post" accept-charset="utf-8" data-receipt-items="[{&quot;text&quot;:&quot;Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 месяц, 1 пользователь&quot;,&quot;quantity&quot;:&quot;1&quot;,&quot;price&quot;:{&quot;amount&quot;:&quot;249&quot;},&quot;paymentSubjectType&quot;:&quot;property_right&quot;,&quot;paymentMethodType&quot;:&quot;full_prepayment&quot;,&quot;tax&quot;:&quot;1&quot;}]">
+        <input type="hidden" name="shopId" value="1493466">
+        <input type="hidden" name="sum" value="249">
+        <input type="hidden" name="customerNumber" value="Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 месяц, 1 пользователь. Ключ лицензии придёт на почту, указанную при оплате.">
+        <input type="hidden" name="shopSuccessURL" value="https://outtalk.ru/thanks/">
+        <input type="hidden" name="shopFailURL" value="https://outtalk.ru/pricing/">
+        <input type="hidden" name="ym_merchant_receipt" value="">
+        <label class="pay-label" for="pay-email-m">Email</label>
+        <input class="pay-email" id="pay-email-m" name="cps_email" type="email" required autocomplete="email" inputmode="email" maxlength="120" spellcheck="false" placeholder="name@example.com">
+        <button class="btn pay-btn" type="submit" disabled>Оплатить 249 ₽</button>
+      </form>
+      <p class="pay-note">Оплата через ЮKassa. Ключ лицензии придёт на эту почту.</p>
+      <noscript><p class="pay-note">Для оплаты включите в браузере JavaScript.</p></noscript>
+      <p class="pay-legal">Оплачивая, вы заключаете <a href="../oferta/">лицензионный договор</a> на OutTalk Pro на выбранный срок. Платеж разовый, автоматического продления и повторных списаний нет. Ключ направляется на указанный email не позднее следующего рабочего дня после подтверждения оплаты. <a href="../oferta/#refund">Условия возврата</a> — в разделе 7 оферты. Сведения об обработке данных — в <a href="../privacy/">Политике</a>.</p>
       <p class="plan-foot">Сначала 14 дней всех функций бесплатно</p>
     </article>
 
@@ -93,23 +116,24 @@
       <p class="price-note">Без НДС: продавец — плательщик налога на профессиональный доход</p>
       <ul class="checks">
         <li><b>Всё из «Персональной»</b> для каждого сотрудника</li>
+        <li>Одно место — один пользователь, до 3 компьютеров</li>
         <li>Скидка 10 % от 10 мест</li>
         <li>Скидка 20 % от 50 мест</li>
         <li>Оплата по счёту с расчётного счёта</li>
-        <li>Чек с ИНН организации, по запросу — акт</li>
+        <li>Чек НПД с ИНН организации, по запросу — документ о предоставлении права</li>
         <li>Пробный период для организации по запросу</li>
       </ul>
-      <a class="btn btn-quiet" href="mailto:mdanshin@gmail.com?subject=OutTalk%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D1%80%D0%B3%D0%B0%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%E2%80%94%20%D1%81%D1%87%D1%91%D1%82">Запросить счёт</a>
+      <a class="btn btn-quiet" href="mailto:mdanshin@yandex.ru?subject=OutTalk%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D1%80%D0%B3%D0%B0%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%E2%80%94%20%D1%81%D1%87%D1%91%D1%82">Запросить счёт</a>
       <p class="plan-foot">В письме укажите название, ИНН и число мест</p>
     </article>
   </div>
-  <p class="plans-legal">Цены в рублях. Покупая, вы принимаете <a href="../oferta/">публичную оферту</a> и <a href="../privacy/">политику обработки персональных данных</a>.</p>
+  <p class="plans-legal">Цены в рублях, без НДС. Каждая оплата разовая, автоматического продления нет. Оплата означает заключение <a href="../oferta/">лицензионного договора</a>. Как обрабатываются данные — в <a href="../privacy/">политике обработки персональных данных</a>.</p>
 </section>
 
 <section class="section" aria-labelledby="pro-title">
   <p class="kicker">Подписка</p>
   <h2 id="pro-title">Что входит в OutTalk Pro</h2>
-  <p class="section-lede">Всё, что превращает почтовый клиент в рабочее место. Эти функции доступны 14 дней бесплатно с первого подключённого ящика, а дальше — по подписке.</p>
+  <p class="section-lede">Всё, что превращает почтовый клиент в рабочее место. Эти функции доступны 14 дней бесплатно с первого подключённого ящика, а дальше — по подписке: каждый месяц или год оплачивается отдельно.</p>
   <div class="features">
     <div class="feature">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
@@ -154,8 +178,8 @@
       <h3>Скачайте и установите</h3>
       <p>Windows 10/11 или macOS 12 и новее. Установка бесплатная, почта работает сразу.</p>
       <div class="dl">
-        <a class="btn btn-quiet btn-small" id="dl-win" href="https://github.com/mdanshin/outtalk-releases/releases/latest">Для Windows</a>
-        <a class="btn btn-quiet btn-small" id="dl-mac" href="https://github.com/mdanshin/outtalk-releases/releases/latest">Для macOS</a>
+        <a class="btn btn-quiet btn-small" id="dl-win" href="https://outtalk.ru/">Для Windows</a>
+        <a class="btn btn-quiet btn-small" id="dl-mac" href="https://outtalk.ru/">Для macOS</a>
       </div>
     </li>
     <li>
@@ -164,11 +188,11 @@
     </li>
     <li>
       <h3>Оплатите удобным способом</h3>
-      <p>Для себя — кнопкой «Купить» на этой странице: картой или через СБП на защищённой странице платёжного сервиса ЮKassa, чек придёт на почту. Организациям — по счёту: нажмите «Запросить счёт», и мы пришлём счёт и договор.</p>
+      <p>Для себя — прямо на этой странице: укажите e-mail и нажмите «Оплатить». Оплата картой или через СБП на защищённой странице платёжного сервиса ЮKassa, чек придёт на ту же почту. Организациям — по счёту: нажмите «Запросить счёт», и мы пришлём счёт и договор.</p>
     </li>
     <li>
       <h3>Получите ключ на почту</h3>
-      <p>Электронный лицензионный ключ придёт на ваш e-mail в течение одного рабочего дня после оплаты, организациям — после поступления оплаты по счёту. Откройте в программе «О программе → Лицензия» и вставьте ключ — функции Pro включатся сразу.</p>
+      <p>Электронный лицензионный ключ придёт на ваш e-mail не позднее следующего рабочего дня после подтверждения оплаты, организациям — после поступления оплаты по счёту. Откройте в программе «Настройки → О программе → Лицензия», нажмите «Ввести ключ» и вставьте ключ — функции Pro включатся сразу.</p>
     </li>
   </ol>
 </section>
@@ -187,19 +211,19 @@
     </details>
     <details>
       <summary>На скольких компьютерах работает лицензия?</summary>
-      <p>Персональная лицензия — для одного человека, на его компьютерах, до трёх одновременно. Лицензия организации покупается по числу мест: одно место — один сотрудник.</p>
+      <p>Персональная лицензия — для одного человека, на его компьютерах, до трёх одновременно. Лицензия организации покупается по числу мест: одно место — один назначенный пользователь, до трёх его компьютеров одновременно.</p>
     </details>
     <details>
       <summary>Подписка продлевается сама?</summary>
-      <p>Только если при оплате вы отдельно согласились на автопродление. Отказаться от него можно в любой момент письмом на mdanshin@gmail.com или способом, указанным в письме об оплате. После отказа деньги больше не списываются, а оплаченный срок дорабатывает до конца.</p>
+      <p>Подписка не продлевается автоматически. Каждая покупка оплачивает только выбранный срок. Для продолжения Pro после его окончания потребуется новая оплата. Почта остается бесплатной.</p>
     </details>
     <details>
       <summary>Можно ли вернуть деньги?</summary>
-      <p>Да. В течение 14 дней после оплаты возвращаем всю сумму. Позже — за полные неиспользованные месяцы годовой подписки. Месячная подписка просто не продлевается. Напишите на mdanshin@gmail.com, возврат — тем же способом, которым вы платили.</p>
+      <p>Да. Если с начала оплаченного периода прошло не больше 14 дней или ключ ещё не пришёл, возвращаем всю сумму. Позже — за оставшиеся календарные дни периода, и для месяца, и для года. Напишите на mdanshin@yandex.ru: возврат — не позднее 10 дней, тем же способом, которым вы платили. Подробно — в <a href="../oferta/#refund">разделе 7 оферты</a>.</p>
     </details>
     <details>
       <summary>Какие документы получит организация?</summary>
-      <p>Счёт, чек самозанятого с ИНН организации — его достаточно для учёта расходов — и, по запросу, акт о предоставлении права. Договор — эта <a href="../oferta/">публичная оферта</a>; если нужен подписанный экземпляр, пришлём. НДС не облагается.</p>
+      <p>Организация получает счет, чек НПД с ее ИНН и, по запросу, документ о предоставлении права. Для подтверждения расходов сохраняйте также договор или оферту принятой редакции и сведения о предоставлении лицензии. Возможность учета расходов зависит от применимых налоговых правил. Договор — эта <a href="../oferta/">публичная оферта</a>; если нужен подписанный экземпляр, пришлём. НДС не облагается.</p>
     </details>
     <details>
       <summary>Обновления платные?</summary>
@@ -210,13 +234,13 @@
       <p>Нет. OutTalk работает напрямую с вашим почтовым сервером и не передаёт нам содержимое писем, календаря и контактов. Для лицензии нам нужен только ваш e-mail — подробнее в <a href="../privacy/">политике обработки персональных данных</a>.</p>
     </details>
   </div>
-  <p class="ask">Остались вопросы? Напишите на <a href="mailto:mdanshin@gmail.com?subject=%D0%92%D0%BE%D0%BF%D1%80%D0%BE%D1%81%20%D0%BE%D0%B1%20OutTalk">mdanshin@gmail.com</a> — ответим в течение рабочего дня.</p>
+  <p class="ask">Остались вопросы? Напишите на <a href="mailto:mdanshin@yandex.ru?subject=%D0%92%D0%BE%D0%BF%D1%80%D0%BE%D1%81%20%D0%BE%D0%B1%20OutTalk">mdanshin@yandex.ru</a> — ответим в течение рабочего дня.</p>
 </section>
 
 </main>
 <footer class="foot">
   <div class="wrap foot-in">
-    <div class="foot-seller"><span>© OutTalk</span><span>Даньшин Михаил Сергеевич, самозанятый</span><span>ИНН 771801591470</span><a href="mailto:mdanshin@gmail.com">mdanshin@gmail.com</a></div>
+    <div class="foot-seller"><span>© OutTalk</span><span>Даньшин Михаил Сергеевич, самозанятый</span><span>ИНН 771801591470</span><a href="mailto:mdanshin@yandex.ru">mdanshin@yandex.ru</a></div>
     <nav class="foot-nav" aria-label="Документы">
       <a href="../pricing/" aria-current="page">Цены</a>
       <a href="../oferta/">Оферта</a>
@@ -224,6 +248,7 @@
       <a href="../requisites/">Реквизиты</a>
       <a href="../docs/">Документация</a>
     </nav>
+    <p class="foot-tm">Наименования Microsoft Exchange, Outlook, Active Directory, Gmail, Яндекс, Mail.ru, Jira и Confluence используются для описания совместимости с соответствующими продуктами и сервисами. OutTalk является независимым продуктом и не заявляет об официальном партнерстве, одобрении или сертификации со стороны их правообладателей.</p>
   </div>
 </footer>
 </body>
