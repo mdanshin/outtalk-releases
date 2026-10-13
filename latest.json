@@ -1,16 +1,16 @@
 {
-  "version": "0.1.25",
-  "date": "2026-10-08T00:00:00Z",
-  "notes": "Релиз v0.1.25",
-  "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.25/OutTalk-0.1.25-arm64.dmg",
+  "version": "0.1.26",
+  "date": "2026-10-13T00:00:00Z",
+  "notes": "Релиз v0.1.26",
+  "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.26/OutTalk-0.1.26-arm64.dmg",
   "downloads": {
     "win": {
       "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.25/OutTalk-Setup-0.1.25.exe",
       "size": 121622804
     },
     "mac": {
-      "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.25/OutTalk-0.1.25-arm64.dmg",
-      "size": 141103716
+      "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.26/OutTalk-0.1.26-arm64.dmg",
+      "size": 121083940
     }
   }
 }
