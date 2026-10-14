@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action https://yookassa.ru https://*.yookassa.ru https://yoomoney.ru https://*.yoomoney.ru">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Цены — OutTalk</title>
 <meta name="description" content="Цены OutTalk: почта бесплатно навсегда, 14 дней всех функций без карты, подписка для себя и лицензии для организаций.">
@@ -80,31 +80,8 @@
         <li>Плагины «Ритм», «Администрирование», «Спутник» и другие</li>
         <li>Лицензия на одного человека, до 3 компьютеров</li>
       </ul>
-      <form class="pay y" action="https://yookassa.ru/integration/simplepay/payment" method="post" target="_blank" rel="noopener" accept-charset="utf-8" data-receipt-items="[{&quot;text&quot;:&quot;Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 год, 1 пользователь&quot;,&quot;quantity&quot;:&quot;1&quot;,&quot;price&quot;:{&quot;amount&quot;:&quot;2490&quot;},&quot;paymentSubjectType&quot;:&quot;property_right&quot;,&quot;paymentMethodType&quot;:&quot;full_prepayment&quot;,&quot;tax&quot;:&quot;1&quot;}]">
-        <input type="hidden" name="shopId" value="1493466">
-        <input type="hidden" name="sum" value="2490">
-        <input type="hidden" name="customerNumber" value="Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 год, 1 пользователь. Ключ лицензии придёт на почту, указанную при оплате.">
-        <input type="hidden" name="shopSuccessURL" value="https://outtalk.ru/thanks/">
-        <input type="hidden" name="shopFailURL" value="https://outtalk.ru/pricing/">
-        <input type="hidden" name="ym_merchant_receipt" value="">
-        <label class="pay-label" for="pay-email-y">Email</label>
-        <input class="pay-email" id="pay-email-y" name="cps_email" type="email" required autocomplete="email" inputmode="email" maxlength="120" spellcheck="false" placeholder="name@example.com">
-        <button class="btn pay-btn" type="submit" disabled>Оплатить 2 490 ₽</button>
-      </form>
-      <form class="pay m" action="https://yookassa.ru/integration/simplepay/payment" method="post" target="_blank" rel="noopener" accept-charset="utf-8" data-receipt-items="[{&quot;text&quot;:&quot;Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 месяц, 1 пользователь&quot;,&quot;quantity&quot;:&quot;1&quot;,&quot;price&quot;:{&quot;amount&quot;:&quot;249&quot;},&quot;paymentSubjectType&quot;:&quot;property_right&quot;,&quot;paymentMethodType&quot;:&quot;full_prepayment&quot;,&quot;tax&quot;:&quot;1&quot;}]">
-        <input type="hidden" name="shopId" value="1493466">
-        <input type="hidden" name="sum" value="249">
-        <input type="hidden" name="customerNumber" value="Предоставление права использования OutTalk Pro на условиях простой (неисключительной) лицензии, 1 месяц, 1 пользователь. Ключ лицензии придёт на почту, указанную при оплате.">
-        <input type="hidden" name="shopSuccessURL" value="https://outtalk.ru/thanks/">
-        <input type="hidden" name="shopFailURL" value="https://outtalk.ru/pricing/">
-        <input type="hidden" name="ym_merchant_receipt" value="">
-        <label class="pay-label" for="pay-email-m">Email</label>
-        <input class="pay-email" id="pay-email-m" name="cps_email" type="email" required autocomplete="email" inputmode="email" maxlength="120" spellcheck="false" placeholder="name@example.com">
-        <button class="btn pay-btn" type="submit" disabled>Оплатить 249 ₽</button>
-      </form>
-      <p class="pay-note">Оплата через ЮKassa. Ключ лицензии придёт на эту почту.</p>
-      <noscript><p class="pay-note">Для оплаты включите в браузере JavaScript.</p></noscript>
-      <p class="pay-legal">Оплачивая, вы заключаете <a href="../oferta/">лицензионный договор</a> на OutTalk Pro на выбранный срок. Платеж разовый, автоматического продления и повторных списаний нет. Ключ направляется на указанный email не позднее следующего рабочего дня после подтверждения оплаты. <a href="../oferta/#refund">Условия возврата</a> — в разделе 7 оферты. Сведения об обработке данных — в <a href="../privacy/">Политике</a>.</p>
+      <a class="btn y" href="mailto:mdanshin@yandex.ru?subject=OutTalk%20Pro%20%E2%80%94%20%D0%BF%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D0%B3%D0%BE%D0%B4">Купить на год</a>
+      <a class="btn m" href="mailto:mdanshin@yandex.ru?subject=OutTalk%20Pro%20%E2%80%94%20%D0%BF%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D0%BC%D0%B5%D1%81%D1%8F%D1%86">Купить на месяц</a>
       <p class="plan-foot">Сначала 14 дней всех функций бесплатно</p>
     </article>
 
@@ -189,7 +166,7 @@
     </li>
     <li>
       <h3>Оплатите удобным способом</h3>
-      <p>Для себя — прямо на этой странице: укажите e-mail и нажмите «Оплатить». Оплата картой или через СБП на защищённой странице платёжного сервиса ЮKassa, чек придёт на ту же почту. Организациям — по счёту: нажмите «Запросить счёт», и мы пришлём счёт и договор.</p>
+      <p>Для себя — кнопкой «Купить» на этой странице: картой или через СБП на защищённой странице платёжного сервиса ЮKassa, чек придёт на почту. Организациям — по счёту: нажмите «Запросить счёт», и мы пришлём счёт и договор.</p>
     </li>
     <li>
       <h3>Получите ключ на почту</h3>
