@@ -137,6 +137,25 @@ a {
 .brand img {
   border-radius: 7px;
 }
+/* Метка «Бета» рядом с названием (ADR-0197): та же, что на страницах сайта, в цветах документации. */
+.beta-tag {
+  flex: none;
+  padding: 1px 7px;
+  border: 1px solid hsl(var(--primary) / 0.34);
+  border-radius: 999px;
+  background: hsl(var(--primary) / 0.08);
+  color: hsl(var(--primary));
+  font-family: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.beta-tag:hover {
+  border-color: hsl(var(--primary));
+}
 .sep {
   color: hsl(var(--muted-foreground));
 }

@@ -100,6 +100,29 @@ header {
   opacity: 0;
   animation: fade 0.8s ease 1.1s forwards;
 }
+/* Метка «Бета» рядом с названием (ADR-0197): тихая, моноширинная, в цвете бренда. */
+.beta-tag {
+  padding: 0.05rem 0.45rem;
+  border: 1px solid rgba(22, 229, 255, 0.32);
+  border-radius: 999px;
+  background: rgba(22, 229, 255, 0.07);
+  color: #7fe9ff;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  opacity: 0;
+  animation: fade 0.8s ease 1.15s forwards;
+}
+.beta-tag:hover {
+  border-color: var(--cyan);
+}
+.hbreak {
+  display: none;
+}
 .top-link {
   margin-left: auto;
   font-size: 0.85rem;
@@ -206,6 +229,24 @@ h1 em {
   font-size: 1.15rem;
   opacity: 0;
   animation: fade 0.9s ease 0.75s forwards;
+}
+
+.beta-line {
+  margin: 0.9rem 0 0;
+  max-width: 64ch;
+  color: var(--dim);
+  font-size: 0.88rem;
+  opacity: 0;
+  animation: fade 0.9s ease 0.85s forwards;
+}
+.beta-line a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+.beta-line a:hover {
+  color: var(--fg);
+  border-bottom-color: var(--cyan);
 }
 
 .cta {
@@ -392,6 +433,8 @@ footer .tm {
     transition: none !important;
   }
   .lede,
+  .beta-line,
+  .beta-tag,
   .cta,
   .facts,
   .stage,
@@ -407,6 +450,31 @@ footer .tm {
 }
 
 @media (max-width: 46rem) {
+  /* Узкий экран: ссылки — второй строкой под названием и меткой «Бета», без выхода за край. */
+  header {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+  .hbreak {
+    display: block;
+    flex-basis: 100%;
+    height: 0;
+  }
+  header {
+    column-gap: 1.1rem;
+  }
+  .wordmark,
+  .beta-tag {
+    margin-left: -0.4rem;
+  }
+  .top-link,
+  .top-link + .top-link {
+    margin-left: 0;
+  }
+  /* «Все версии» есть в подвале («Что нового»): на телефоне ссылки помещаются в одну строку. */
+  .top-link[href="docs/changelog.html"] {
+    display: none;
+  }
   h1 {
     font-size: clamp(2rem, 10.8vw, 2.9rem);
   }
