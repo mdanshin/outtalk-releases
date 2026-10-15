@@ -5,8 +5,8 @@
   "url": "https://outtalk.ru/releases/OutTalk-0.1.27-arm64.dmg",
   "downloads": {
     "win": {
-      "url": "https://github.com/mdanshin/outtalk-releases/releases/download/v0.1.26/OutTalk-Setup-0.1.26.exe",
-      "size": 107889289
+      "url": "https://outtalk.ru/releases/OutTalk-Setup-0.1.27.exe",
+      "size": 107606532
     },
     "mac": {
       "url": "https://outtalk.ru/releases/OutTalk-0.1.27-arm64.dmg",
