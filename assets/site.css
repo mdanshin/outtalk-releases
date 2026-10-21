@@ -1157,6 +1157,25 @@ h1 em {
   font-family: var(--mono);
   font-size: 0.78rem;
 }
+/* Стадия плагина (ADR-0206): та же тихая метка, что «Бета» в шапке, но не ссылка — у плагина
+   своя стадия, независимая от программы. */
+.pcard-stage {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--chip-fg);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  vertical-align: 0.2em;
+}
 .pcard-signed {
   padding: 0.05rem 0.55rem;
   border-radius: 999px;
