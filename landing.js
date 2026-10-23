@@ -195,7 +195,7 @@ if (machine && !reduced && matchMedia('(pointer: fine)').matches) {
    directly under https://outtalk.ru/releases/. Anything else falls back to the installation guide
    (the folder itself has no listing). */
 const FALLBACK = 'docs/distribution.html'
-const INSTALLER = /^OutTalk-[A-Za-z0-9.-]+\.(?:dmg|exe|zip)$/
+const INSTALLER = /^OutTalk-[A-Za-z0-9.-]+\.(?:dmg|exe|zip|AppImage|deb)$/
 // Bridge (ADR-0195): while releases are still duplicated to GitHub Releases, the feed may carry an
 // older installer link there (the platform this run did not ship is carried over). Remove with the bridge.
 const BRIDGE_REPO = ['', 'mdanshin', 'outtalk-releases', 'releases', 'download']
@@ -221,26 +221,58 @@ const WIN_ICON =
 const MAC_ICON =
   '<path d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8c-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.2 1.2-2.4 1.2-2.5 0 0-2.4-.9-2.4-3.5ZM14.2 5.9c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3Z"/>'
 
-const isMac = /Mac|iPhone|iPad/i.test(navigator.userAgent)
-const os = isMac ? 'mac' : 'win'
+const LINUX_ICON =
+  '<path fill-rule="evenodd" d="M12 2.5c-2.2 0-3.6 1.8-3.6 4.2 0 1.2-.5 2.2-1.3 3.4C5.9 11.8 4.5 14 4.5 16.6c0 1.2.4 2.2 1 2.9-.7.3-1.5.9-1.5 1.6 0 .9 1.4 1.4 3.2 1.4 1.3 0 2.3-.3 2.9-.8.6.1 1.2.2 1.9.2s1.3-.1 1.9-.2c.6.5 1.6.8 2.9.8 1.8 0 3.2-.5 3.2-1.4 0-.7-.8-1.3-1.5-1.6.6-.7 1-1.7 1-2.9 0-2.6-1.4-4.8-2.6-6.5-.8-1.2-1.3-2.2-1.3-3.4 0-2.4-1.4-4.2-3.6-4.2Zm0 8.3c-1.9 0-3.4 2.2-3.4 4.9s1.5 4.6 3.4 4.6 3.4-1.9 3.4-4.6-1.5-4.9-3.4-4.9Z"/>'
+
+const ua = navigator.userAgent
+const isMac = /Mac|iPhone|iPad/i.test(ua)
+const isLinux = !isMac && /Linux|X11/i.test(ua) && !/Android/i.test(ua)
 const mb = (b) => (typeof b === 'number' && b > 0 ? ` · ${(b / 1048576).toFixed(0)} МБ` : '')
+const LABEL = { win: 'Скачать для Windows', mac: 'Скачать для macOS', linux: 'Скачать для Linux (.deb)' }
+const ICON = { win: WIN_ICON, mac: MAC_ICON, linux: LINUX_ICON }
+
+// One link as text: «<label> · NN МБ». The href is always checked by safeUrl.
+function link(entry, label) {
+  const a = document.createElement('a')
+  a.href = safeUrl(entry.url)
+  a.textContent = label + mb(entry.size)
+  return a
+}
 
 function paintDownloads(feed) {
   const d = (feed && feed.downloads) || {}
+  // Linux (ADR-0213) is offered only once its own half of a release is out: .deb for Ubuntu/Debian,
+  // AppImage for the rest. Until then a Linux visitor sees the page as before.
+  const linux = safeUrl((d.linux || {}).url) !== FALLBACK && safeUrl((d['linux-appimage'] || {}).url) !== FALLBACK
+  const os = isMac ? 'mac' : isLinux && linux ? 'linux' : 'win'
   const here = d[os] || {}
-  const there = d[os === 'win' ? 'mac' : 'win'] || {}
 
-  $('os-icon').innerHTML = isMac ? MAC_ICON : WIN_ICON // our constants, never feed data
+  $('os-icon').innerHTML = ICON[os] // our constants, never feed data
   $('download').href = safeUrl(here.url)
-  $('download-label').textContent =
-    (isMac ? 'Скачать для macOS' : 'Скачать для Windows') + mb(here.size)
+  $('download-label').textContent = LABEL[os] + mb(here.size)
 
-  const link = document.createElement('a')
-  link.href = safeUrl(there.url)
-  link.textContent = 'Скачать' + mb(there.size)
   const alt = $('other-os')
-  alt.textContent = `Нужна версия для ${isMac ? 'Windows' : 'macOS'}? `
-  alt.appendChild(link)
+  if (os === 'linux') {
+    alt.textContent = 'Другие дистрибутивы — '
+    alt.appendChild(link(d['linux-appimage'], 'AppImage'))
+    alt.appendChild(document.createTextNode('. Есть версии для '))
+    alt.appendChild(link(d.win || {}, 'Windows'))
+    alt.appendChild(document.createTextNode(' и '))
+    alt.appendChild(link(d.mac || {}, 'macOS'))
+    alt.appendChild(document.createTextNode('.'))
+  } else {
+    const other = os === 'win' ? 'mac' : 'win'
+    alt.textContent = `Нужна версия для ${other === 'mac' ? 'macOS' : 'Windows'}? `
+    alt.appendChild(link(d[other] || {}, 'Скачать'))
+    if (linux) {
+      alt.appendChild(document.createTextNode('. Для Linux — '))
+      alt.appendChild(link(d.linux, '.deb'))
+      alt.appendChild(document.createTextNode(' или '))
+      alt.appendChild(link(d['linux-appimage'], 'AppImage'))
+      alt.appendChild(document.createTextNode('.'))
+    }
+  }
+  if (linux) $('platforms').textContent = 'Windows 10/11 · macOS 12+ на Apple Silicon · Linux x64'
 
   if (feed && /^[\w.+-]{1,24}$/.test(String(feed.version ?? ''))) {
     $('version').textContent = String(feed.version)
