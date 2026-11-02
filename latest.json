@@ -12,5 +12,12 @@
       "url": "https://outtalk.ru/releases/OutTalk-0.1.29-arm64.dmg",
       "size": 123393695
     }
+  },
+  "signature": {
+    "format": "outtalk-feed-signature",
+    "v": 1,
+    "kid": "u1",
+    "issuedAt": "2026-11-02T21:01:26.208Z",
+    "sig": "jfCk6Nlc3ndGKOdwW_PHZqG2pTZK1zDorZT_33uP8dPwJgXADLkprE64rZVbICrv2T5NN-U3_ntfQLvYKjFxBg"
   }
 }
