@@ -5,8 +5,8 @@
   "url": "https://outtalk.ru/releases/OutTalk-0.1.30-arm64.dmg",
   "downloads": {
     "win": {
-      "url": "https://outtalk.ru/releases/OutTalk-Setup-0.1.29.exe",
-      "size": 107920365
+      "url": "https://outtalk.ru/releases/OutTalk-Setup-0.1.30.exe",
+      "size": 108809154
     },
     "mac": {
       "url": "https://outtalk.ru/releases/OutTalk-0.1.30-arm64.dmg",
@@ -17,7 +17,7 @@
     "format": "outtalk-feed-signature",
     "v": 1,
     "kid": "u1",
-    "issuedAt": "2026-11-04T10:41:15.284Z",
-    "sig": "Ora7VgloE7fGW5E_aU2Blv1OQ5iYULKyeia20_rLdDwq8EfCUoF1lK6J1gaT1YZApqEeTIZgjmc5gy3K8SZ6DA"
+    "issuedAt": "2026-11-04T12:24:32.864Z",
+    "sig": "uQKLgtEsSBKEJciyRmM1Xha4zzE7LU6Xu923C_1raIadgeGeA07JLKytzm7QX3lQYUwzaI1gbAQN9kQ7UFsbAw"
   }
 }
