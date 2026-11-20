@@ -1,8 +1,8 @@
 {
   "version": "0.1.31",
-  "date": "2026-11-04T00:00:00Z",
   "notes": "Релиз v0.1.31",
   "url": "https://outtalk.ru/releases/OutTalk-0.1.31-arm64.dmg",
+  "date": "2026-11-20T05:43:08.501Z",
   "downloads": {
     "win": {
       "url": "https://outtalk.ru/releases/OutTalk-Setup-0.1.31.exe",
@@ -11,13 +11,21 @@
     "mac": {
       "url": "https://outtalk.ru/releases/OutTalk-0.1.31-arm64.dmg",
       "size": 124849661
+    },
+    "linux": {
+      "url": "https://outtalk.ru/releases/OutTalk-0.1.31-x64.deb",
+      "size": 106680492
+    },
+    "linux-appimage": {
+      "url": "https://outtalk.ru/releases/OutTalk-0.1.31-x64.AppImage",
+      "size": 134433373
     }
   },
   "signature": {
     "format": "outtalk-feed-signature",
     "v": 1,
     "kid": "u1",
-    "issuedAt": "2026-11-15T17:41:44.658Z",
-    "sig": "m3SvJllk35e2k0_eUU9QKqjh-l2xo51aN9IkWJUKww6Q22kFJmmc8LZQlYj7QiaR0OSh2jzBUk596-holncCAQ"
+    "issuedAt": "2026-11-20T05:43:10.630Z",
+    "sig": "XgexXCwReLbC3JZ-lwQbE00QkvaAm1oO1RMKoolImM0P1SWbTA3FnmlUsjleLfdSsXKxvrF9rlU1b87f_42lAg"
   }
 }
