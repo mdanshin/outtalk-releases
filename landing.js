@@ -1,4 +1,5 @@
 const $ = (id) => document.getElementById(id)
+document.documentElement.classList.add('js')
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /* ── 1. The mark draws itself along its own strokes ──
@@ -225,11 +226,129 @@ const LINUX_ICON =
   '<path fill-rule="evenodd" d="M12 2.5c-2.2 0-3.6 1.8-3.6 4.2 0 1.2-.5 2.2-1.3 3.4C5.9 11.8 4.5 14 4.5 16.6c0 1.2.4 2.2 1 2.9-.7.3-1.5.9-1.5 1.6 0 .9 1.4 1.4 3.2 1.4 1.3 0 2.3-.3 2.9-.8.6.1 1.2.2 1.9.2s1.3-.1 1.9-.2c.6.5 1.6.8 2.9.8 1.8 0 3.2-.5 3.2-1.4 0-.7-.8-1.3-1.5-1.6.6-.7 1-1.7 1-2.9 0-2.6-1.4-4.8-2.6-6.5-.8-1.2-1.3-2.2-1.3-3.4 0-2.4-1.4-4.2-3.6-4.2Zm0 8.3c-1.9 0-3.4 2.2-3.4 4.9s1.5 4.6 3.4 4.6 3.4-1.9 3.4-4.6-1.5-4.9-3.4-4.9Z"/>'
 
 const ua = navigator.userAgent
+const isMobileOs = /iPhone|iPad|iPod|Android/i.test(ua)
 const isMac = /Mac|iPhone|iPad/i.test(ua)
 const isLinux = !isMac && /Linux|X11/i.test(ua) && !/Android/i.test(ua)
 const mb = (b) => (typeof b === 'number' && b > 0 ? ` · ${(b / 1048576).toFixed(0)} МБ` : '')
 const LABEL = { win: 'Скачать для Windows', mac: 'Скачать для macOS', linux: 'Скачать для Linux (.deb)' }
 const ICON = { win: WIN_ICON, mac: MAC_ICON, linux: LINUX_ICON }
+
+/* ── 6. Terminal install ──
+   Without JavaScript every command remains visible as ordinary text. With JavaScript the same
+   markup becomes an accessible tab set, preferring the visitor's system and never presenting a
+   command as available when the public feed has no matching build. */
+const installSection = $('terminal-install')
+const installTabs = [...document.querySelectorAll('[data-install-tab]')]
+const installPanels = [...document.querySelectorAll('[data-install-panel]')]
+const initialInstallOs = isMac ? 'mac' : isLinux ? 'linux' : 'win'
+const detectedOs = isMobileOs ? null : initialInstallOs
+
+for (const [os, icon] of Object.entries(ICON)) {
+  const target = document.querySelector(`[data-install-icon="${os}"]`)
+  if (target) target.innerHTML = icon // constants above, never network data
+}
+
+const chooseInstallTab = (os, moveFocus = false) => {
+  for (const tab of installTabs) {
+    const active = tab.dataset.installTab === os
+    tab.setAttribute('aria-selected', String(active))
+    tab.tabIndex = active ? 0 : -1
+    if (active && moveFocus) tab.focus()
+  }
+  for (const panel of installPanels) panel.hidden = panel.dataset.installPanel !== os
+}
+
+if (installTabs.length && installPanels.length) {
+  const tablist = installTabs[0].parentElement
+  tablist.setAttribute('role', 'tablist')
+  installTabs.forEach((tab, index) => {
+    const os = tab.dataset.installTab
+    const panel = installPanels.find((candidate) => candidate.dataset.installPanel === os)
+    tab.id = `install-tab-${os}`
+    tab.setAttribute('role', 'tab')
+    tab.setAttribute('aria-controls', panel.id)
+    tab.dataset.detected = String(detectedOs !== null && os === detectedOs)
+    panel.setAttribute('role', 'tabpanel')
+    panel.setAttribute('aria-labelledby', tab.id)
+    tab.addEventListener('click', () => chooseInstallTab(os))
+    tab.addEventListener('keydown', (event) => {
+      let next = null
+      if (event.key === 'Home') next = 0
+      if (event.key === 'End') next = installTabs.length - 1
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % installTabs.length
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + installTabs.length) % installTabs.length
+      if (next === null) return
+      event.preventDefault()
+      chooseInstallTab(installTabs[next].dataset.installTab, true)
+    })
+  })
+  chooseInstallTab(initialInstallOs)
+  installSection.classList.add('is-loading')
+  for (const button of document.querySelectorAll('[data-copy-command]')) button.disabled = true
+}
+
+const linuxVariants = [...document.querySelectorAll('[data-linux-variant]')]
+const linuxCommands = [...document.querySelectorAll('[data-linux-command]')]
+const linuxVariantGroup = document.querySelector('.linux-variants')
+if (linuxVariantGroup) linuxVariantGroup.setAttribute('role', 'group')
+const chooseLinuxVariant = (kind) => {
+  for (const button of linuxVariants) {
+    const active = button.dataset.linuxVariant === kind
+    button.setAttribute('aria-pressed', String(active))
+  }
+  for (const command of linuxCommands) command.hidden = command.dataset.linuxCommand !== kind
+}
+for (const button of linuxVariants) {
+  button.addEventListener('click', () => chooseLinuxVariant(button.dataset.linuxVariant))
+}
+chooseLinuxVariant('deb')
+
+const copyStatus = $('copy-status')
+for (const button of document.querySelectorAll('[data-copy-command]')) {
+  button.addEventListener('click', async () => {
+    const code = $(button.dataset.copyCommand)
+    const command = code.textContent.trim()
+    let copied = false
+    try {
+      if (location.protocol !== 'https:' || !navigator.clipboard || !navigator.clipboard.writeText) {
+        throw new Error('clipboard unavailable')
+      }
+      await navigator.clipboard.writeText(command)
+      copied = true
+    } catch {
+      const selection = getSelection()
+      const range = document.createRange()
+      range.selectNodeContents(code)
+      selection.removeAllRanges()
+      selection.addRange(range)
+    }
+    const shortcut = isMac && !isMobileOs ? '⌘C' : 'Ctrl+C'
+    const message = copied ? 'Скопировано' : `Выделено — нажмите ${shortcut}`
+    button.textContent = message
+    copyStatus.textContent = copied ? 'Команда скопирована' : `Команда выделена. Нажмите ${shortcut}, чтобы скопировать.`
+    setTimeout(() => {
+      button.textContent = 'Копировать'
+    }, 2000)
+  })
+}
+
+function paintInstallAvailability(downloads) {
+  if (!installSection) return
+  const available = {
+    win: safeUrl((downloads.win || {}).url) !== FALLBACK,
+    mac: safeUrl((downloads.mac || {}).url) !== FALLBACK,
+    linux: safeUrl((downloads.linux || {}).url) !== FALLBACK &&
+      safeUrl((downloads['linux-appimage'] || {}).url) !== FALLBACK
+  }
+  for (const panel of installPanels) {
+    const ok = available[panel.dataset.installPanel]
+    panel.classList.toggle('is-unavailable', !ok)
+    for (const button of panel.querySelectorAll('[data-copy-command]')) button.disabled = !ok
+    const unavailable = panel.querySelector('.install-unavailable')
+    if (unavailable) unavailable.hidden = ok
+  }
+  installSection.classList.remove('is-loading')
+}
 
 // One link as text: «<label> · NN МБ». The href is always checked by safeUrl.
 function link(entry, label) {
@@ -287,6 +406,7 @@ function paintDownloads(feed) {
       })
     }
   }
+  paintInstallAvailability(d)
 }
 
 fetch('latest.json', { cache: 'no-store' })

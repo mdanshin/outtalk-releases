@@ -17,6 +17,7 @@ AddType text/yaml .yml .yaml
 AddType application/json .json
 AddType text/javascript .js
 AddType text/css .css
+AddType text/plain .ps1 .sh
 AddType image/svg+xml .svg
 AddType image/webp .webp
 AddType application/vnd.microsoft.portable-executable .exe
@@ -49,7 +50,7 @@ AddType application/octet-stream .blockmap .sig .outtalk-plugin
   # Статика без версии в имени (стили, скрипты, картинки) — час.
   Header set Cache-Control "public, max-age=3600"
   # Страницы, фиды и каталог плагинов меняются при каждой публикации — всегда сверять с сервером.
-  <FilesMatch "\.(html|json|yml|yaml)$">
+  <FilesMatch "\.(html|json|yml|yaml|ps1|sh)$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
   # Версия в имени файла — содержимое под этим именем не меняется никогда.

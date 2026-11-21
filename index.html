@@ -109,6 +109,12 @@
             <span id="platforms">Windows 10/11 · macOS 12+ на Apple Silicon</span>
             <span>Microsoft Exchange (EWS) и IMAP</span>
           </div>
+
+          <a class="terminal-jump" href="#terminal-install">
+            <span aria-hidden="true">&gt;_</span>
+            Установить из терминала
+            <span aria-hidden="true">↓</span>
+          </a>
         </section>
 
         <div class="stage">
@@ -117,6 +123,101 @@
             <div class="glare"></div>
           </div>
         </div>
+
+        <section class="terminal-install" id="terminal-install" aria-labelledby="terminal-title">
+          <p class="section-kicker">Установка из терминала</p>
+          <h2 id="terminal-title">Одна команда — и OutTalk готов к установке</h2>
+          <p class="section-lede">
+            Выберите систему, скопируйте команду и подтвердите штатную установку. Команда скачает
+            актуальную версию с официального сайта.
+          </p>
+
+          <div class="terminal-card">
+            <div class="install-tabs" aria-label="Операционная система">
+              <button class="install-tab" type="button" data-install-tab="win">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-install-icon="win"></svg>
+                Windows
+                <span class="detected-os">ваша система</span>
+              </button>
+              <button class="install-tab" type="button" data-install-tab="mac">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-install-icon="mac"></svg>
+                macOS
+                <span class="detected-os">ваша система</span>
+              </button>
+              <button class="install-tab" type="button" data-install-tab="linux">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-install-icon="linux"></svg>
+                Linux
+                <span class="detected-os">ваша система</span>
+              </button>
+            </div>
+
+            <div class="install-panel" id="install-win" data-install-panel="win">
+              <h3>Windows 10 и 11</h3>
+              <p class="install-caption">PowerShell скачает установщик, сверит файл и запустит его.</p>
+              <div class="command-row" data-install-command>
+                <code id="command-win" dir="ltr">irm https://outtalk.ru/install.ps1 | iex</code>
+                <button class="copy-command" type="button" data-copy-command="command-win">Копировать</button>
+              </div>
+              <p class="install-unavailable" hidden>Сборка для Windows сейчас недоступна.</p>
+              <p class="install-note">
+                Команда не отключает SmartScreen и другие средства защиты Windows.
+              </p>
+              <div class="install-links">
+                <a href="install.ps1">Посмотреть скрипт</a>
+                <a href="#download">Скачать обычным способом</a>
+              </div>
+            </div>
+
+            <div class="install-panel" id="install-mac" data-install-panel="mac">
+              <h3>macOS на Apple Silicon</h3>
+              <p class="install-caption">Команда скачает образ и откроет его штатными средствами macOS.</p>
+              <div class="command-row" data-install-command>
+                <code id="command-mac" dir="ltr">curl -fsSL https://outtalk.ru/install.sh | sh</code>
+                <button class="copy-command" type="button" data-copy-command="command-mac">Копировать</button>
+              </div>
+              <p class="install-unavailable" hidden>Сборка для macOS сейчас недоступна.</p>
+              <p class="install-note">
+                macOS может попросить отдельно подтвердить открытие неподписанного приложения.
+              </p>
+              <div class="install-links">
+                <a href="install.sh">Посмотреть скрипт</a>
+                <a href="#download">Скачать обычным способом</a>
+              </div>
+            </div>
+
+            <div class="install-panel" id="install-linux" data-install-panel="linux">
+              <h3>Linux x64</h3>
+              <div class="linux-variants" aria-label="Формат сборки Linux">
+                <button type="button" data-linux-variant="deb">.deb <span>Ubuntu / Debian</span></button>
+                <button type="button" data-linux-variant="appimage">AppImage <span>другие дистрибутивы</span></button>
+              </div>
+              <div class="linux-command" data-linux-command="deb">
+                <p class="install-caption">Скачивает пакет и передаёт его штатной команде apt.</p>
+                <div class="command-row" data-install-command>
+                  <code id="command-linux-deb" dir="ltr">curl -fsSL https://outtalk.ru/install.sh | sh</code>
+                  <button class="copy-command" type="button" data-copy-command="command-linux-deb">Копировать</button>
+                </div>
+              </div>
+              <div class="linux-command" data-linux-command="appimage">
+                <p class="install-caption">Сохраняет AppImage в папку «Applications» и запускает его.</p>
+                <div class="command-row" data-install-command>
+                  <code id="command-linux-appimage" dir="ltr">curl -fsSL https://outtalk.ru/install.sh | sh -s -- --appimage</code>
+                  <button class="copy-command" type="button" data-copy-command="command-linux-appimage">Копировать</button>
+                </div>
+              </div>
+              <p class="install-unavailable" hidden>Сборка для Linux сейчас недоступна.</p>
+              <p class="install-note">
+                Скрипт не запускает OutTalk с отключённой песочницей. Для установки .deb система
+                запросит права администратора.
+              </p>
+              <div class="install-links">
+                <a href="install.sh">Посмотреть скрипт</a>
+                <a href="#download">Скачать обычным способом</a>
+              </div>
+            </div>
+          </div>
+          <p class="copy-status" id="copy-status" aria-live="polite"></p>
+        </section>
       </main>
 
       <footer>
